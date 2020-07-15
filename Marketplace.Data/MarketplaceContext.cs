@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Data
 {
-    class MarketplaceContext : DbContext
+    public class MarketplaceContext : DbContext
     {
         public MarketplaceContext() : base("name=MarketplaceConnectionString")
         {

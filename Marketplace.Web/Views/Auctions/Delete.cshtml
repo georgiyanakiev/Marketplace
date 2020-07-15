@@ -1,0 +1,13 @@
+﻿@model Marketplace.Entities.Auction
+
+<h2>Are you sure you want to delete this auction?</h2>
+
+<form method="post">
+    <input type="hidden" name="ID" value="@Model.ID" />
+    <button>
+        Yes
+    </button>
+    <button>
+        No
+    </button>
+</form>

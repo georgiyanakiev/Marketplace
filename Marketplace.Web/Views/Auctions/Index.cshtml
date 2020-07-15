@@ -1,0 +1,55 @@
+﻿@model List<Marketplace.Entities.Auction>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Actual Amount
+            </th>
+            <th>
+                Start Time
+            </th>
+            <th>
+                End Time
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var auction in Model)
+        {
+        <tr>
+            <td>
+                 <input type="hidden" value="@auction.ID" />
+               </td>
+            <td>
+                @auction.Title
+            </td>
+            <td>
+                @auction.Description
+            </td>
+            <td>
+                @auction.ActualAmount
+            </td>
+            <td>
+                @auction.StartTime
+            </td>
+            <td>
+                @auction.EndTime
+            </td>
+            <td>
+                <a href="Delete/@auction.ID">Delete</a>
+            </td>
+        </tr>
+        }
+
+    </tbody>
+</table>
