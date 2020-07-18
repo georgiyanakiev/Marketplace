@@ -1,39 +1,55 @@
-﻿<h2>
+﻿@model Marketplace.Entities.Auction
+
+<h2>
     Create Auction
 </h2>
 <br />
 
-<form method="post">
+<form id="createForm" method="post" action="Auctions/Create">
     <label>
         Title
     </label>
-    <input  name="Title"/>
+    <input name="Title" />
 
     <br />
     <label>
         Description
     </label>
-    <input  name="Description"/>
+    <input name="Description" />
     <br />
     <label>
         ActualAmount
     </label>
-    <input name="ActualAmount"/>
+    <input name="ActualAmount" />
     <br />
     <label>
         StartTime
     </label>
-    <input name="StartTime"/>
+    <input name="StartTime" />
     <br />
     <label>
         EndTime
     </label>
-    <input name="EndTime"/>
+    <input name="EndTime" />
 
     <br />
 
-    <button>
+    <button type="button" id="saveButton">
         Save
     </button>
 
 </form>
+
+<script>
+    $("#saveButton").click(function () {
+        $.ajax({
+            url: "/Auctions/Create",
+            method: "post",
+            data: $("#createForm").serialize()
+        })
+            .done(function (response) {
+                $("#listingArea").html(response);
+            });
+    });
+
+</script>
