@@ -7,37 +7,39 @@
 <br />
 
 <form id="editForm" method="post">
-    <input type="hidden" name="ID" value="@Model.ID" />
+    <input class="form-group" type="hidden" name="ID" value="@Model.ID" />
+    <div class="form-group">
+        <label>
+            Title
+        </label>
+        <input class="form-control" name="Title" value="@Model.Title"/>
+    </div>
+    <div class="form-group">
+        <label>
+            Description
+        </label>
+        <input class="form-control" name="Description" value="@Model.Description" />
+    </div>
+    <div class="form-group">
+        <label>
+            Actual Amount
+        </label>
+        <input class="form-control" name="ActualAmount" value="@Model.ActualAmount" />
+    </div>
+    <div class="form-group">
+        <label>
+            Start Time
+        </label>
+        <input class="form-control" name="StartTime" value="@Model.StartTime" />
+    </div>
+    <div class="form-group">
+        <label>
+            End Time
+        </label>
+        <input class="form-control" name="EndTime" value="@Model.EndTime" />
+    </div>
 
-    <label>
-        Title
-    </label>
-    <input name="Title" value="@Model.Title" />
-
-    <br />
-    <label>
-        Description
-    </label>
-    <input name="Description" value="@Model.Description" />
-    <br />
-    <label>
-        ActualAmount
-    </label>
-    <input name="ActualAmount" value="@Model.ActualAmount" />
-    <br />
-    <label>
-        StartTime
-    </label>
-    <input name="StartTime" value="@Model.StartTime" />
-    <br />
-    <label>
-        EndTime
-    </label>
-    <input name="EndTime" value="@Model.EndTime" />
-
-    <br />
-
-    <button id ="saveButton" type="button">
+    <button id="saveButton" type="button" class="btn btn-outline-success">
         Save
     </button>
 
@@ -50,7 +52,7 @@
             data: $("#editForm").serialize()
         })
             .done(function (response) {
-                $("#contentArea").html(response);
+                $("#listingArea").html(response);
             });
     });
 

@@ -32,6 +32,7 @@ namespace Marketplace.Web.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            
             return PartialView();
             
         }
