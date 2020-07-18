@@ -6,8 +6,9 @@
 </h2>
 <br />
 
-<form method="post">
+<form id="editForm" method="post">
     <input type="hidden" name="ID" value="@Model.ID" />
+
     <label>
         Title
     </label>
@@ -36,9 +37,21 @@
 
     <br />
 
-    <button>
+    <button id ="saveButton" type="button">
         Save
     </button>
 
 </form>
+<script>
+    $("#saveButton").click(function () {
+        $.ajax({
+            url: "/Auctions/Edit",
+            method: "post",
+            data: $("#editForm").serialize()
+        })
+            .done(function (response) {
+                $("#listingArea").html(response);
+            });
+    });
 
+</script>
