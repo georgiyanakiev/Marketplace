@@ -1,6 +1,10 @@
 ﻿@model List<Marketplace.Entities.Auction>
 
-<div id="contentArea">
+<div class="row">
+
+</div>
+
+<div id="listingArea">
 <table>
     <thead>
         <tr>
@@ -103,7 +107,7 @@
                 }
                 }).done(function (response) {
 
-                    $("#contentArea").html(response);
+                    $("#listingArea").html(response);
                 });
                 }
               });
