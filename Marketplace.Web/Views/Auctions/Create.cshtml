@@ -5,7 +5,7 @@
 </h2>
 <br />
 
-<form id="createForm" method="post" action="Auctions/Create">
+<form id="createForm" method="post" >
     <label>
         Title
     </label>
@@ -48,7 +48,7 @@
             data: $("#createForm").serialize()
         })
             .done(function (response) {
-                $("#listingArea").html(response);
+                $("#contentArea").html(response);
             });
     });
 
