@@ -1,58 +1,66 @@
 ﻿@model Marketplace.Entities.Auction
 
-
-<h2>
-    Edit Auction
-</h2>
-<br />
-
-<form id="editForm" method="post">
-    <input class="form-group" type="hidden" name="ID" value="@Model.ID" />
-    <div class="form-group">
-        <label>
-            Title
-        </label>
-        <input class="form-control" name="Title" value="@Model.Title"/>
-    </div>
-    <div class="form-group">
-        <label>
-            Description
-        </label>
-        <input class="form-control" name="Description" value="@Model.Description" />
-    </div>
-    <div class="form-group">
-        <label>
-            Actual Amount
-        </label>
-        <input class="form-control" name="ActualAmount" value="@Model.ActualAmount" />
-    </div>
-    <div class="form-group">
-        <label>
-            Start Time
-        </label>
-        <input class="form-control" name="StartTime" value="@Model.StartTime" />
-    </div>
-    <div class="form-group">
-        <label>
-            End Time
-        </label>
-        <input class="form-control" name="EndTime" value="@Model.EndTime" />
-    </div>
-
-    <button id="saveButton" type="button" class="btn btn-outline-success">
-        Save
+<div class="modal-header">
+    <h5 class="modal-title">Edit Auction</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
     </button>
+</div>
+<form id="editForm" method="post" >
 
+    <div class="modal-body">
+        <input class="form-group" type="hidden" name="ID" value="@Model.ID" />
+        <div class="form-group">
+            <label>
+                Title
+            </label>
+            <input class="form-control" name="Title" value="@Model.Title" />
+        </div>
+        <div class="form-group">
+            <label>
+                Description
+            </label>
+            <input class="form-control" name="Description" value="@Model.Description" />
+        </div>
+        <div class="form-group">
+            <label>
+                Actual Amount
+            </label>
+            <input class="form-control" name="ActualAmount" value="@Model.ActualAmount" />
+        </div>
+        <div class="form-group">
+            <label>
+                Start Time
+            </label>
+            <input class="form-control" name="StartTime" value="@Model.StartTime" />
+        </div>
+        <div class="form-group">
+            <label>
+                End Time
+            </label>
+            <input class="form-control" name="EndTime" value="@Model.EndTime" />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="saveButton" class="btn btn-outline-success">
+            Save
+        </button>
+    </div>
 </form>
+
 <script>
     $("#saveButton").click(function () {
         $.ajax({
-            url: "/Auctions/Edit",
+            url: "@Url.Action("Edit", "Auctions")",
             method: "post",
             data: $("#editForm").serialize()
         })
             .done(function (response) {
+                $("#formModal").modal('toggle');
                 $("#listingArea").html(response);
+
             });
     });
 

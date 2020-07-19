@@ -1,5 +1,6 @@
 ﻿using Marketplace.Entities;
 using Marketplace.Services;
+using Marketplace.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,47 +16,44 @@ namespace Marketplace.Web.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            
-            var auctions = service.GetAllAuctions();
+            AuctionsListingViewModel model = new AuctionsListingViewModel();
 
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView(auctions);
-            }
-            else
-            {
-                return View(auctions);
-            }
+            model.PageTitle = "Auctions";
+            model.PageDescription = "Auctions Listing Page";
 
+            return View(model);
+
+        }
+
+        public ActionResult Listing()
+        {
+            AuctionsListingViewModel model = new AuctionsListingViewModel();
+
+            model.Auctions = service.GetAllAuctions();
+            return PartialView(model);
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            
             return PartialView();
-            
-        }
+        }   
 
         [HttpPost]
         public ActionResult Create(Auction auction)
         {
             
-
             service.SaveAuction(auction);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Listing");
            
-
         }
 
         [HttpGet]
         public ActionResult Edit(int ID)
         {
             
-
             var auction = service.GetAuctionByID(ID);
-
 
             return PartialView(auction);
         }
@@ -67,18 +65,7 @@ namespace Marketplace.Web.Controllers
 
             service.UpdateAuction(auction);
 
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public ActionResult Delete(int ID)
-        {
-            
-
-            var auction = service.GetAuctionByID(ID);
-
-
-            return View(auction);
+            return RedirectToAction("Listing");
         }
 
         [HttpPost]
@@ -88,7 +75,7 @@ namespace Marketplace.Web.Controllers
 
             service.DeleteAuction(auction);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Listing");
         }
 
         [HttpGet]
