@@ -16,7 +16,12 @@ namespace Marketplace.Services
 
             return context.Auctions.ToList();
         }
+        public List<Auction> GetPromotedAuctions()
+        {
+            MarketplaceContext context = new MarketplaceContext();
 
+            return context.Auctions.Take(4).ToList();
+        }
         public Auction GetAuctionByID(int ID)
         {
             MarketplaceContext context = new MarketplaceContext();

@@ -1,12 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@model Marketplace.Web.ViewModels.PageViewModel
+
+
+<!DOCTYPE html>
 <html>
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
+
     <meta name="author" content="">
-    <title>@ViewBag.Title - Marketplace</title>
+    <title>@Model.PageTitle</title>
+    <meta name="description" content="@Model.PageDescription">
 
     <!-- Bootstrap core CSS -->
     <link href="~/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -57,7 +61,6 @@
         <!-- /.container -->
     </footer>
     <!-- Bootstrap core JavaScript -->
-    <script src="~/Content/vendor/jquery/jquery.min.js"></script>
     <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
