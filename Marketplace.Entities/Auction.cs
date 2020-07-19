@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Entities
 {
-     public class Auction
+     public class Auction : BaseEntity
     {
-        public int ID { get; set; }
         public string Title { get; set; }
         public string PictureURL { get; set; }
         public string Description { get; set; }
