@@ -10,12 +10,12 @@ namespace Marketplace.Web.Controllers
 {
     public class AuctionsController : Controller
     {
+        AuctionsService service = new AuctionsService();
+
         [HttpGet]
         public ActionResult Index()
         {
-            AuctionsService service = new AuctionsService();
-
-
+            
             var auctions = service.GetAllAuctions();
 
             if (Request.IsAjaxRequest())
@@ -40,7 +40,7 @@ namespace Marketplace.Web.Controllers
         [HttpPost]
         public ActionResult Create(Auction auction)
         {
-            AuctionsService service = new AuctionsService();
+            
 
             service.SaveAuction(auction);
 
@@ -52,7 +52,7 @@ namespace Marketplace.Web.Controllers
         [HttpGet]
         public ActionResult Edit(int ID)
         {
-            AuctionsService service = new AuctionsService();
+            
 
             var auction = service.GetAuctionByID(ID);
 
@@ -63,7 +63,7 @@ namespace Marketplace.Web.Controllers
         [HttpPost]
         public ActionResult Edit(Auction auction)
         {
-            AuctionsService service = new AuctionsService();
+            
 
             service.UpdateAuction(auction);
 
@@ -73,7 +73,7 @@ namespace Marketplace.Web.Controllers
         [HttpGet]
         public ActionResult Delete(int ID)
         {
-            AuctionsService service = new AuctionsService();
+            
 
             var auction = service.GetAuctionByID(ID);
 
@@ -84,11 +84,21 @@ namespace Marketplace.Web.Controllers
         [HttpPost]
         public ActionResult Delete(Auction auction)
         {
-            AuctionsService service = new AuctionsService();
+           
 
             service.DeleteAuction(auction);
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Details(int ID)
+        {
+            
+            var auction = service.GetAuctionByID(ID);
+
+
+            return View(auction);
         }
     }
 }
