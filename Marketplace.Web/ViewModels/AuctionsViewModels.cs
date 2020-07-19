@@ -6,6 +6,11 @@ using System.Web;
 
 namespace Marketplace.Web.ViewModels
 {
+    public class AuctionsListingViewModel : PageViewModel
+    {
+        public List<Auction> Auctions { get; set; }
+    }
+
     public class AuctionsViewModel : PageViewModel
     {
         public List<Auction> AllAuctions { get; set; }

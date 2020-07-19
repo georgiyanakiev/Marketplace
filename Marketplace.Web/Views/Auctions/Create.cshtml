@@ -1,47 +1,51 @@
-﻿@model Marketplace.Entities.Auction
-
-<h2>
-    Create Auction
-</h2>
-<br />
-
-<form id="createForm" method="post" action="Auctions/Create/">
-    <div class="form-group">
-        <label>
-            Title
-        </label>
-        <input class="form-control" name="Title" required/>
-    </div>
-    <div class="form-group">
-        <label>
-            Description
-        </label>
-        <input class="form-control" name="Description" required/>
-    </div>
-    <div class="form-group">
-        <label>
-            Actual Amount
-        </label>
-        <input class="form-control" name="ActualAmount" required/>
-    </div>
-    <div class="form-group">
-        <label>
-            Start Time
-        </label>
-        <input class="form-control" name="StartTime" required/>
-    </div>
-   
-    <div class="form-group">
-        <label>
-            End Time
-        </label>
-        <input class="form-control" name="EndTime" required/>
-    </div>
-  
-    <button type="button" id="saveButton" class="btn btn-outline-success">
-        Save
+﻿<div class="modal-header">
+    <h5 class="modal-title" >Create Auction</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
     </button>
+</div>
+<form id="createForm" method="post" action="Auctions/Create/">
 
+    <div class="modal-body">
+        <div class="form-group">
+            <label>
+                Title
+            </label>
+            <input class="form-control" name="Title" required />
+        </div>
+        <div class="form-group">
+            <label>
+                Description
+            </label>
+            <input class="form-control" name="Description" required />
+        </div>
+        <div class="form-group">
+            <label>
+                Actual Amount
+            </label>
+            <input class="form-control" name="ActualAmount" required />
+        </div>
+        <div class="form-group">
+            <label>
+                Start Time
+            </label>
+            <input class="form-control" name="StartTime" required />
+        </div>
+
+        <div class="form-group">
+            <label>
+                End Time
+            </label>
+            <input class="form-control" name="EndTime" required />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="saveButton" class="btn btn-outline-success">
+            Save
+        </button>
+    </div>
 </form>
 
 <script>
@@ -52,7 +56,9 @@
             data: $("#createForm").serialize()
         })
             .done(function (response) {
+                
                 $("#listingArea").html(response);
+                $("#formModal").modal('toggle');
             });
     });
 
