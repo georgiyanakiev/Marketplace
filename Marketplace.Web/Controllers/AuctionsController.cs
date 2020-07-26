@@ -11,7 +11,9 @@ namespace Marketplace.Web.Controllers
 {
     public class AuctionsController : Controller
     {
-        AuctionsService service = new AuctionsService();
+        AuctionsService auctionsService = new AuctionsService();
+
+        CategoriesService categoriesService = new CategoriesService();
 
         [HttpGet]
         public ActionResult Index()
@@ -29,21 +31,50 @@ namespace Marketplace.Web.Controllers
         {
             AuctionsListingViewModel model = new AuctionsListingViewModel();
 
-            model.Auctions = service.GetAllAuctions();
+            model.Auctions = auctionsService.GetAllAuctions();
             return PartialView(model);
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            return PartialView();
+            CreateAuctionViewModel model = new CreateAuctionViewModel();
+
+            model.Categories = categoriesService.GetAllCategories();
+
+            return PartialView(model);
         }   
 
         [HttpPost]
-        public ActionResult Create(Auction auction)
+        public ActionResult Create(CreateAuctionViewModel model)
         {
-            
-            service.SaveAuction(auction);
+
+            Auction auction = new Auction();
+            auction.Title = model.Title;
+            auction.CategoryID = model.CategoryID;
+            auction.Description = model.Description;
+            auction.ActualAmount = model.ActualAmount;
+            auction.StartTime = model.StartTime;
+            auction.EndTime = model.EndTime;
+            //LINQ
+            var pictureIDs = model.AuctionPictures
+                .Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries)
+                .Select(ID=> int.Parse(ID)).ToList();
+
+
+            auction.AuctionPictures = new List<AuctionPicture>();
+            auction.AuctionPictures.AddRange(pictureIDs.Select(x=> new AuctionPicture() { PictureID = x }).ToList());
+
+            //foreach (var picID in pictureIDs)
+            //{
+            //    var auctionPicture = new AuctionPicture();
+            //    auctionPicture.PictureID = picID;
+
+            //    auction.AuctionPictures.Add(auctionPicture);
+            //}
+
+
+            auctionsService.SaveAuction(auction);
 
             return RedirectToAction("Listing");
            
@@ -53,7 +84,7 @@ namespace Marketplace.Web.Controllers
         public ActionResult Edit(int ID)
         {
             
-            var auction = service.GetAuctionByID(ID);
+            var auction = auctionsService.GetAuctionByID(ID);
 
             return PartialView(auction);
         }
@@ -63,7 +94,7 @@ namespace Marketplace.Web.Controllers
         {
             
 
-            service.UpdateAuction(auction);
+            auctionsService.UpdateAuction(auction);
 
             return RedirectToAction("Listing");
         }
@@ -73,7 +104,7 @@ namespace Marketplace.Web.Controllers
         {
            
 
-            service.DeleteAuction(auction);
+            auctionsService.DeleteAuction(auction);
 
             return RedirectToAction("Listing");
         }
@@ -82,7 +113,7 @@ namespace Marketplace.Web.Controllers
         public ActionResult Details(int ID)
         {
             
-            var auction = service.GetAuctionByID(ID);
+            var auction = auctionsService.GetAuctionByID(ID);
 
 
             return View(auction);

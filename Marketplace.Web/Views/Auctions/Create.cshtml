@@ -1,4 +1,6 @@
-﻿<div class="modal-header">
+﻿@model Marketplace.Web.ViewModels.CreateAuctionViewModel
+
+<div class="modal-header">
     <h5 class="modal-title" >Create Auction</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -13,53 +15,111 @@
             </label>
             <input class="form-control" name="Title" required />
         </div>
-        <div class="form-group">
-            <label>
-                Description
-            </label>
-            <input class="form-control" name="Description" required />
-        </div>
-        <div class="form-group">
-            <label>
-                Actual Amount
-            </label>
-            <input class="form-control" name="ActualAmount" required />
-        </div>
-        <div class="form-group">
-            <label>
-                Start Time
-            </label>
-            <input class="form-control" name="StartTime" required />
-        </div>
+        
+            <div class="form-group">
+                <label>
+                   Category
+                </label>
+                <select class="form-control" name="CategoryID">
+                   @foreach (var category in Model.Categories)
+                   {
+                       <option value="@category.ID">
+                           @category.Name
+                       </option>
+                   }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>
+                    Description
+                </label>
+                <input class="form-control" name="Description" required />
+            </div>
+            <div class="form-group">
+                <label>
+                    Actual Amount
+                </label>
+                <input class="form-control" name="ActualAmount" required />
+            </div>
+            <div class="form-group">
+                <label>
+                    Start Time
+                </label>
+                <input class="form-control" name="StartTime" required />
+            </div>
 
-        <div class="form-group">
-            <label>
-                End Time
-            </label>
-            <input class="form-control" name="EndTime" required />
-        </div>
+            <div class="form-group">
+                <label>
+                    End Time
+                </label>
+                <input class="form-control" name="EndTime" required />
+            </div>
+            <div class="form-group">
+                <label>
+                    Select Pictures
+                </label>
+                <input id="auctionPictures" class="form-control" name="AuctionPictures" type="file" multiple />
+                <div id="picturesArea"></div>
+                <input type="hidden" name="AuctionPictures" id="pictureIDs" />
 
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-        <button type="button" id="saveButton" class="btn btn-outline-success">
-            Save
-        </button>
-    </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="saveButton" class="btn btn-outline-success">
+                Save
+            </button>
+        </div>
 </form>
 
 <script>
-    $("#saveButton").click(function () {
+     $("#saveButton").click(function () {
+        var imageIDs = [];
+        $("#picturesArea .image").each(function () {
+            var imageID = $(this).attr("data-id");
+            imageIDs.push(imageID);
+        });
+        $("#pictureIDs").val(imageIDs.join());
         $.ajax({
-            url: "/Auctions/Create",
-            method: "post",
+            url: "@Url.Action("Create", "Auctions")",
+            method: "POST",
             data: $("#createForm").serialize()
         })
             .done(function (response) {
-                
                 $("#listingArea").html(response);
-                $("#formModal").modal('toggle');
+                $('#formModal').modal('toggle');
+             });
+    });
+    $("#auctionPictures").change(function () {
+
+        var pictures = this.files;
+        var picsData = new FormData();
+        for (var i = 0; i < pictures.length; i++) {
+            picsData.append("Picture", pictures[i]);
+        }
+        $.ajax({
+            url: "@Url.Action("UploadPictures", "Shared")",
+            type: "POST",
+            data: picsData,
+            dataType: "JSON",
+            processData: false,
+            contentType: false
+        })
+            .done(function (responses) {
+                
+                for (var i = 0; i < responses.length; i++)
+                {
+                    var picResponse = responses[i];
+                      AttachNewImage(picResponse.pictureURL, picResponse.pictureID);
+                }
             });
     });
+    function AttachNewImage(imageURL, imageID) {
+        var newimgHTML = $("#imageTemplate").clone();
+        newimgHTML.find(".image").attr("src", "/content/images/" + imageURL);
+        newimgHTML.find(".image").attr("data-id", imageID);
+        $("#picturesArea").append(newimgHTML.html());
+        RemoveImagesOnClick();
+    }
 
 </script>

@@ -7,6 +7,9 @@
                 Title
             </th>
             <th>
+                Category
+            </th>
+            <th>
                 Description
             </th>
             <th>
@@ -26,30 +29,32 @@
     <tbody>
         @foreach (var auction in Model.Auctions)
         {
-            <tr>
-                <td>
-                    <input type="hidden" value="@auction.ID" />
-                    @auction.Title
+        <tr>
+            <td>
+                <input type="hidden" value="@auction.ID" />
+                @auction.Title
+            </td>
+            <td>
+                @auction.Category.Name
+            </td>
+            <td>
+                @auction.Description
+            </td>
+            <td>
+                @auction.ActualAmount
+            </td>
+            <td>
+                @auction.StartTime
+            </td>
+            <td>
+                @auction.EndTime
+            </td>
+            <td>
+                <button class="editButton btn btn-outline-primary" data-id="@auction.ID" data-toggle="modal" data-target="#formModal">Edit</button>
+                <button class="deleteButton btn btn-outline-danger" data-id="@auction.ID" data-toggle="modal" data-target="#deleteModal">Delete</button>
 
-                </td>
-                <td>
-                    @auction.Description
-                </td>
-                <td>
-                    @auction.ActualAmount
-                </td>
-                <td>
-                    @auction.StartTime
-                </td>
-                <td>
-                    @auction.EndTime
-                </td>
-                <td>
-                    <button class="editButton btn btn-outline-primary" data-id="@auction.ID" data-toggle="modal" data-target="#formModal">Edit</button>
-                    <button class="deleteButton btn btn-outline-danger" data-id="@auction.ID" data-toggle="modal" data-target="#deleteModal">Delete</button>
-
-                </td>
-            </tr>
+            </td>
+        </tr>
         }
 
     </tbody>
