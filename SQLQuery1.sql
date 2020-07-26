@@ -1,0 +1,1 @@
+﻿select * from AuctionPictures where AuctionID = 21

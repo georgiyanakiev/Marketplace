@@ -4,7 +4,7 @@
             <h2>Auctions</h2>
         </div>
         <div class="float-right">
-            <button class="btn btn-outline-success" id="createButton">Create New Auction</button>
+            <button class="btn btn-outline-success" id="createButton">New Auction</button>
         </div>
 
         <div id="listingArea">
@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<div id="imageTemplate" sstyle="display:none">
+<div id="imageTemplate" style="display:none">
     <img class='image img-fluid' src='' />
 
 </div>
@@ -68,5 +68,12 @@
                 $('#deleteModal').modal('toggle');
             });
         });
-   
+    function RemoveImagesOnClick() {
+        $("#picturesArea .image").click(function () {
+            $(this).remove();
+        });
+    }
+
+
+
 </script>
