@@ -20,20 +20,23 @@
     <tbody>
         @foreach (var category in Model.Categories)
         {
-            <tr>
-                <td>
-                    
-                    @category.Name
-                </td>
-                <td>
-                    @category.Description
-                </td>
-                <td>
-                    <button class="editButton btn btn-outline-primary" data-id="@category.ID" data-toggle="modal" data-target="#formModal">Edit</button>
-                    <button class="deleteButton btn btn-outline-danger" data-id="@category.ID" data-toggle="modal" data-target="#deleteModal">Delete</button>
+        <tr>
+            <td>
 
-                </td>
-            </tr>
+                @category.Name
+            </td>
+            <td>
+                @category.Description
+            </td>
+            <td>
+                @category.Auctions.Count()
+            </td>
+            <td>
+                <button class="editButton btn btn-outline-primary" data-id="@category.ID" data-toggle="modal" data-target="#formModal">Edit</button>
+                <button class="deleteButton btn btn-outline-danger" data-id="@category.ID" data-toggle="modal" data-target="#deleteModal">Delete</button>
+
+            </td>
+        </tr>
         }
 
     </tbody>
