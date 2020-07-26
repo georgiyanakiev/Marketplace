@@ -1,4 +1,4 @@
-﻿@model Marketplace.Entities.Auction
+﻿@model Marketplace.Web.ViewModels.CreateAuctionViewModel
 
 <div class="modal-header">
     <h5 class="modal-title">Edit Auction</h5>
@@ -15,6 +15,19 @@
                 Title
             </label>
             <input class="form-control" name="Title" value="@Model.Title" />
+        </div>
+        <div class="form-group">
+            <label>
+                Category
+            </label>
+            <select class="form-control" name="CategoryID">
+                @foreach (var category in Model.Categories)
+                {
+
+                    var selected = category.ID == Model.CategoryID ? "selected" : string.Empty;
+                    <option value="@category.ID" @selected> @category.Name</option>
+                }
+            </select>
         </div>
         <div class="form-group">
             <label>
@@ -40,7 +53,24 @@
             </label>
             <input class="form-control" name="EndTime" value="@Model.EndTime" />
         </div>
+        <div class="form-group">
+            <label>
+                Select Pictures
+            </label>
+            <input id="auctionPictures" class="form-control" name="AuctionPictures" type="file" multiple />
+            <div id="picturesArea">
+                @if (Model.AuctionPicturesList != null && Model.AuctionPicturesList.Count > 0)
+                {
+                    foreach (var picture in Model.AuctionPicturesList)
+                    {
+                        <img class='image img-fluid' src='/content/images/@picture.Picture.URL' data-id="@picture.ID" />
+                    }
+                }
 
+            </div>
+            <input type="hidden" name="AuctionPictures" id="pictureIDs" />
+
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
@@ -51,7 +81,18 @@
 </form>
 
 <script>
+    RemoveImagesOnClick();
+
     $("#saveButton").click(function () {
+
+        var imageIDs = [];
+        $("#picturesArea .image").each(function () {
+            var imageID = $(this).attr("data-id");
+            imageIDs.push(imageID);
+        });
+        $("#pictureIDs").val(imageIDs.join());
+
+
         $.ajax({
             url: "@Url.Action("Edit", "Auctions")",
             method: "post",
@@ -61,6 +102,31 @@
                 $("#formModal").modal('toggle');
                 $("#listingArea").html(response);
 
+            });
+    });
+
+     $("#auctionPictures").change(function () {
+
+        var pictures = this.files;
+        var picsData = new FormData();
+        for (var i = 0; i < pictures.length; i++) {
+            picsData.append("Picture", pictures[i]);
+        }
+        $.ajax({
+            url: "@Url.Action("UploadPictures", "Shared")",
+            type: "POST",
+            data: picsData,
+            dataType: "JSON",
+            processData: false,
+            contentType: false
+        })
+            .done(function (responses) {
+
+                for (var i = 0; i < responses.length; i++)
+                {
+                    var picResponse = responses[i];
+                      AttachNewImage(picResponse.pictureURL, picResponse.pictureID);
+                }
             });
     });
 
