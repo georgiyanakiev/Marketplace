@@ -23,7 +23,7 @@ namespace Marketplace.Web.ViewModels
         
     }
 
-    public class CreateAuctionViewModel : PageViewModel
+    public class CreateCategoryViewModel : PageViewModel
     {
         
         public int ID { get; set; }

@@ -58,12 +58,12 @@
                 Select Pictures
             </label>
             <input id="auctionPictures" class="form-control" name="AuctionPictures" type="file" multiple />
-            <div id="picturesArea">
+            <div id="picturesArea" class="mt-2">
                 @if (Model.AuctionPicturesList != null && Model.AuctionPicturesList.Count > 0)
                 {
                     foreach (var picture in Model.AuctionPicturesList)
                     {
-                        <img class='image img-fluid' src='/content/images/@picture.Picture.URL' data-id="@picture.ID" />
+                        <img class='image img-thumbnail' src='/content/images/@picture.Picture.URL' data-id="@picture.ID" style="width: 200px; height: 200px;"/>
                     }
                 }
 

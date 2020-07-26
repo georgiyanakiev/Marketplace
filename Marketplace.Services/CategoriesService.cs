@@ -16,6 +16,37 @@ namespace Marketplace.Services
 
             return context.Categories.ToList();
         }
-        
+        public Category GetCategoryByID(int ID)
+        {
+            MarketplaceContext context = new MarketplaceContext();
+
+            return context.Categories.Find(ID);
+        }
+        public void SaveCategory(Category category)
+        {
+            MarketplaceContext context = new MarketplaceContext();
+
+            context.Categories.Add(category);
+
+            context.SaveChanges();
+        }
+
+        public void UpdateCategory(Category category)
+        {
+            MarketplaceContext context = new MarketplaceContext();
+
+            context.Entry(category).State = System.Data.Entity.EntityState.Modified;
+
+            context.SaveChanges();
+        }
+
+        public void DeleteCategory(Category category)
+        {
+            MarketplaceContext context = new MarketplaceContext();
+
+            context.Entry(category).State = System.Data.Entity.EntityState.Deleted;
+
+            context.SaveChanges();
+        }
     }
 }
