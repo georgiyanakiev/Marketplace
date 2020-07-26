@@ -112,11 +112,14 @@ namespace Marketplace.Web.Controllers
         [HttpGet]
         public ActionResult Details(int ID)
         {
-            
-            var auction = auctionsService.GetAuctionByID(ID);
+            AuctionDetailsViewModel model = new AuctionDetailsViewModel();
 
+            model.Auction = auctionsService.GetAuctionByID(ID);
 
-            return View(auction);
+            model.PageTitle = "Auctions Details: " + model.Auction.Title;
+            model.PageDescription = model.Auction.Description.Substring(0, 10);
+
+            return View(model);
         }
     }
 }
