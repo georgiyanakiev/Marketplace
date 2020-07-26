@@ -38,7 +38,7 @@ namespace Marketplace.Web.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            CreateAuctionViewModel model = new CreateAuctionViewModel();
+            CreateCategoryViewModel model = new CreateCategoryViewModel();
 
             model.Categories = categoriesService.GetAllCategories();
 
@@ -46,7 +46,7 @@ namespace Marketplace.Web.Controllers
         }   
 
         [HttpPost]
-        public ActionResult Create(CreateAuctionViewModel model)
+        public ActionResult Create(CreateCategoryViewModel model)
         {
 
             Auction auction = new Auction();
@@ -68,7 +68,7 @@ namespace Marketplace.Web.Controllers
 
 
                 auction.AuctionPictures = new List<AuctionPicture>();
-                auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { PictureID = x }).ToList());
+                auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { AuctionID = auction.ID, PictureID = x }).ToList());
             }
             //foreach (var picID in pictureIDs)
             //{
@@ -88,7 +88,7 @@ namespace Marketplace.Web.Controllers
         [HttpGet]
         public ActionResult Edit(int ID)
         {
-            CreateAuctionViewModel model = new CreateAuctionViewModel();
+            CreateCategoryViewModel model = new CreateCategoryViewModel();
 
             var auction = auctionsService.GetAuctionByID(ID);
 
@@ -110,7 +110,7 @@ namespace Marketplace.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(CreateAuctionViewModel model)
+        public ActionResult Edit(CreateCategoryViewModel model)
         {
 
             Auction auction = new Auction();
