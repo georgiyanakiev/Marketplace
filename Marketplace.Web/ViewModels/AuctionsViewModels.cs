@@ -26,7 +26,7 @@ namespace Marketplace.Web.ViewModels
     public class CreateAuctionViewModel : PageViewModel
     {
         
-        public int CategoryID { get; set; }
+        public int ID { get; set; }
 
         public string Title { get; set; }
         public string Description { get; set; }
@@ -36,6 +36,7 @@ namespace Marketplace.Web.ViewModels
         public string AuctionPictures { get; set; }
 
         public List<Category> Categories { get; set; }
-
+        public int CategoryID { get; set; }
+        public List<AuctionPicture> AuctionPicturesList { get; set; }
     }
 }
