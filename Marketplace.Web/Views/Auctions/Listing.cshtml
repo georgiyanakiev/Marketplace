@@ -29,37 +29,86 @@
     <tbody>
         @foreach (var auction in Model.Auctions)
         {
-        <tr>
-            <td>
-                <input type="hidden" value="@auction.ID" />
-                @auction.Title
-            </td>
-            <td>
-                @auction.Category.Name
-            </td>
-            <td>
-                @auction.Description
-            </td>
-            <td>
-                @auction.ActualAmount
-            </td>
-            <td>
-                @auction.StartTime
-            </td>
-            <td>
-                @auction.EndTime
-            </td>
-            <td>
-                <button class="editButton btn btn-outline-primary" data-id="@auction.ID" data-toggle="modal" data-target="#formModal">Edit</button>
-                <button class="deleteButton btn btn-outline-danger" data-id="@auction.ID" data-toggle="modal" data-target="#deleteModal">Delete</button>
+            <tr>
+                <td>
+                    <input type="hidden" value="@auction.ID" />
+                    @auction.Title
+                </td>
+                <td>
+                    @auction.Category.Name
+                </td>
+                <td>
+                    @auction.Description
+                </td>
+                <td>
+                    @auction.ActualAmount
+                </td>
+                <td>
+                    @auction.StartTime
+                </td>
+                <td>
+                    @auction.EndTime
+                </td>
+                <td>
+                    <button class="editButton btn btn-outline-primary" data-id="@auction.ID" data-toggle="modal" data-target="#formModal">Edit</button>
+                    <button class="deleteButton btn btn-outline-danger" data-id="@auction.ID" data-toggle="modal" data-target="#deleteModal">Delete</button>
 
-            </td>
-        </tr>
+                </td>
+            </tr>
         }
 
     </tbody>
 
 </table>
+
+@if (Model.Pager != null && Model.Pager.TotalPages > 0)
+{
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+
+            @if (Model.Pager.CurrentPage == 1)
+            {
+
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Previous</a>
+                </li>
+
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index","Auctions", new { pageNo = Model.Pager.CurrentPage - 1 } )">Previous</a>
+                </li>
+            }
+
+
+            @for (int page = Model.Pager.StartPage; page < Model.Pager.EndPage + 1; page++)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index","Auctions", new { pageNo = page } )">
+                        @page
+                    </a>
+                </li>
+            }
+
+            @if (Model.Pager.CurrentPage == Model.Pager.EndPage)
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index","Auctions", new { pageNo = Model.Pager.CurrentPage + 1 } )">Next</a>
+                </li>
+            }
+
+
+        </ul>
+    </nav>
+}
 
 <script>
     $(".editButton").click(function () {

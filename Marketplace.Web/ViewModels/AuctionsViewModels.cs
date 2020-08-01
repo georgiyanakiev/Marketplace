@@ -9,6 +9,11 @@ namespace Marketplace.Web.ViewModels
     public class AuctionsListingViewModel : PageViewModel
     {
         public List<Auction> Auctions { get; set; }
+        public int? CategoryID { get; set; }
+        public string SearchTerm { get; set; }
+
+        public Pager Pager { get; set; }
+        public int? PageNo { get;  set; }
     }
 
     public class AuctionsViewModel : PageViewModel
@@ -37,6 +42,7 @@ namespace Marketplace.Web.ViewModels
 
         public List<Category> Categories { get; set; }
         public int CategoryID { get; set; }
+        
         public List<AuctionPicture> AuctionPicturesList { get; set; }
     }
 }

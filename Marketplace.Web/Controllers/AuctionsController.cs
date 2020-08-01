@@ -16,22 +16,35 @@ namespace Marketplace.Web.Controllers
         CategoriesService categoriesService = new CategoriesService();
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? categoryID, string searchTerm, int? pageNo)
         {
             AuctionsListingViewModel model = new AuctionsListingViewModel();
 
             model.PageTitle = "Auctions";
             model.PageDescription = "Auctions Listing Page";
 
+            model.CategoryID = categoryID;
+            model.SearchTerm = searchTerm;
+            model.PageNo = pageNo;
+
             return View(model);
 
         }
 
-        public ActionResult Listing()
+        public ActionResult Listing(int? categoryID, string searchTerm, int? pageNo)
         {
+
+            var pageSize = 2;
+
             AuctionsListingViewModel model = new AuctionsListingViewModel();
 
-            model.Auctions = auctionsService.GetAllAuctions();
+            model.Auctions = auctionsService.SearchAuctions(categoryID, searchTerm, pageNo, pageSize);
+
+            var totalAuctions = auctionsService.GetAuctionCount();
+
+
+            model.Pager = new Pager(totalAuctions,pageNo, pageSize);
+
             return PartialView(model);
         }
 
