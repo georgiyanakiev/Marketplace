@@ -67,11 +67,15 @@
     <img class='image img-thumbnail' src='' style="width: 200px; height: 200px;"/>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+
+
 <script>
     $("#createButton").click(function () {
         $.ajax({
             url: "@Url.Action("Create", "Auctions")",
-            type: "GET",
+            type: "get",
          }).done(function (response) {
             $('#formModal').modal('toggle');
             $("#contentArea").html(response);
@@ -104,7 +108,14 @@
             $(this).remove();
         });
     }
-
+    function ReloadListing() {
+       $.ajax({
+            url: "@Url.Action("Listing", "Auctions")",
+            type: "get",
+         }).done(function (response) {
+             $("#listingArea").html(response);
+        });
+    }
 
 
 </script>
