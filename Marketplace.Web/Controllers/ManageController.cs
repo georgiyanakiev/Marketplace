@@ -7,30 +7,31 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Marketplace.Web.Models;
+using Marketplace.Services;
 
 namespace Marketplace.Web.Controllers
 {
     [Authorize]
     public class ManageController : Controller
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        private MarketplaceSignInManager _signInManager;
+        private MarketplaceUserManager _userManager;
 
         public ManageController()
         {
         }
 
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public ManageController(MarketplaceUserManager userManager, MarketplaceSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
+        public MarketplaceSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                return _signInManager ?? HttpContext.GetOwinContext().Get<MarketplaceSignInManager>();
             }
             private set 
             { 
@@ -38,11 +39,11 @@ namespace Marketplace.Web.Controllers
             }
         }
 
-        public ApplicationUserManager UserManager
+        public MarketplaceUserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<MarketplaceUserManager>();
             }
             private set
             {
