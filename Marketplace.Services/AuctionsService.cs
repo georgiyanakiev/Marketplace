@@ -40,11 +40,23 @@ namespace Marketplace.Services
             return auctions.OrderByDescending(x =>x.CategoryID).Skip(skipCount).Take(pageSize).ToList();
         }
 
-        public int GetAuctionCount()
+        public int GetAuctionCount(int? categoryID, string searchTerm)
         {
             MarketplaceContext context = new MarketplaceContext();
 
-            return context.Auctions.Count();
+            var auctions = context.Auctions.AsQueryable();
+
+            if (categoryID.HasValue && categoryID.Value > 0)
+            {
+                auctions = auctions.Where(x => x.CategoryID == categoryID.Value);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                auctions = auctions.Where(x => x.Title.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return auctions.Count();
         }
 
         public List<Auction> GetPromotedAuctions()
@@ -72,9 +84,16 @@ namespace Marketplace.Services
         {
             MarketplaceContext context = new MarketplaceContext();
 
-            context.Entry(auction).State = System.Data.Entity.EntityState.Modified;
+            var existingAuction = context.Auctions.Find(auction.ID);
+
+            context.AuctionPictures.RemoveRange(existingAuction.AuctionPictures);
+
+            context.Entry(existingAuction).CurrentValues.SetValues(auction);
+
+            context.AuctionPictures.AddRange(auction.AuctionPictures);
 
             context.SaveChanges();
+            
         }
 
         public void DeleteAuction(Auction auction)
