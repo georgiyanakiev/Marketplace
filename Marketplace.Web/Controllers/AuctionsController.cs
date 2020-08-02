@@ -15,7 +15,7 @@ namespace Marketplace.Web.Controllers
 
         CategoriesService categoriesService = new CategoriesService();
 
-        [HttpGet]
+        
         public ActionResult Index(int? categoryID, string searchTerm, int? pageNo)
         {
             AuctionsListingViewModel model = new AuctionsListingViewModel();
@@ -27,6 +27,8 @@ namespace Marketplace.Web.Controllers
             model.SearchTerm = searchTerm;
             model.PageNo = pageNo;
 
+            model.Categories = categoriesService.GetAllCategories();
+
             return View(model);
 
         }
@@ -34,13 +36,13 @@ namespace Marketplace.Web.Controllers
         public ActionResult Listing(int? categoryID, string searchTerm, int? pageNo)
         {
 
-            var pageSize = 1;
+            var pageSize = 5;
 
             AuctionsListingViewModel model = new AuctionsListingViewModel();
 
             model.Auctions = auctionsService.SearchAuctions(categoryID, searchTerm, pageNo, pageSize);
 
-            var totalAuctions = auctionsService.GetAuctionCount();
+            var totalAuctions = auctionsService.GetAuctionCount(categoryID, searchTerm);
 
 
             model.Pager = new Pager(totalAuctions,pageNo, pageSize);
@@ -160,7 +162,7 @@ namespace Marketplace.Web.Controllers
 
 
                 auction.AuctionPictures = new List<AuctionPicture>();
-                        auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { PictureID = x }).ToList());
+                auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { AuctionID = auction.ID, PictureID = x }).ToList());
             }
             auctionsService.UpdateAuction(auction);
 

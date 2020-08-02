@@ -78,6 +78,21 @@
 
 
 <script>
+
+    $('input[name="StartTime"]').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        maxYear: parseInt(moment().format('YYYY'), 10)
+    });
+    $('input[name="EndTime"]').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        maxYear: parseInt(moment().format('YYYY'), 10)
+    });
+
+
     $("#createForm").validate({
         rules: {
             Title: {
