@@ -34,7 +34,7 @@ namespace Marketplace.Web.Controllers
         public ActionResult Listing(int? categoryID, string searchTerm, int? pageNo)
         {
 
-            var pageSize = 2;
+            var pageSize = 1;
 
             AuctionsListingViewModel model = new AuctionsListingViewModel();
 
@@ -51,7 +51,7 @@ namespace Marketplace.Web.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            CreateCategoryViewModel model = new CreateCategoryViewModel();
+            CreateAuctionViewModel model = new CreateAuctionViewModel();
 
             model.Categories = categoriesService.GetAllCategories();
 
@@ -59,49 +59,63 @@ namespace Marketplace.Web.Controllers
         }   
 
         [HttpPost]
-        public ActionResult Create(CreateCategoryViewModel model)
+        public JsonResult Create(CreateAuctionViewModel model)
         {
+            JsonResult result = new JsonResult();
 
-            Auction auction = new Auction();
-            auction.Title = model.Title;
-            auction.CategoryID = model.ID;
-            auction.Description = model.Description;
-            auction.ActualAmount = model.ActualAmount;
-            auction.StartTime = model.StartTime;
-            auction.EndTime = model.EndTime;
 
-            //check if we have AuctionPictureIds posted back from form
-            if (!string.IsNullOrEmpty(model.AuctionPictures))
+            if (ModelState.IsValid)
             {
 
-                //LINQ
-                var pictureIDs = model.AuctionPictures
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(ID => int.Parse(ID)).ToList();
+                Auction auction = new Auction();
+                auction.Title = model.Title;
+                auction.CategoryID = model.CategoryID;
+                auction.Description = model.Description;
+                auction.ActualAmount = model.ActualAmount;
+                auction.StartTime = model.StartTime;
+                auction.EndTime = model.EndTime;
+
+                //check if we have AuctionPictureIds posted back from form
+                if (!string.IsNullOrEmpty(model.AuctionPictures))
+                {
+
+                    //LINQ
+                    var pictureIDs = model.AuctionPictures
+                        .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(ID => int.Parse(ID)).ToList();
 
 
-                auction.AuctionPictures = new List<AuctionPicture>();
-                auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { AuctionID = auction.ID, PictureID = x }).ToList());
+                    auction.AuctionPictures = new List<AuctionPicture>();
+                    auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { AuctionID = auction.ID, PictureID = x }).ToList());
+                }
+
+
+                //foreach (var picID in pictureIDs)
+                //{
+                //    var auctionPicture = new AuctionPicture();
+                //    auctionPicture.PictureID = picID;
+
+                //    auction.AuctionPictures.Add(auctionPicture);
+                //}
+
+
+                auctionsService.SaveAuction(auction);
+
+                result.Data = new { Success = true };
+
             }
-            //foreach (var picID in pictureIDs)
-            //{
-            //    var auctionPicture = new AuctionPicture();
-            //    auctionPicture.PictureID = picID;
+            else
+            {
+                result.Data = new { Success = false, Error = "Unable to save Auction. Please enter valid values." };
+            }
 
-            //    auction.AuctionPictures.Add(auctionPicture);
-            //}
-
-
-            auctionsService.SaveAuction(auction);
-
-            return RedirectToAction("Listing");
-           
+            return result;
         }
 
         [HttpGet]
         public ActionResult Edit(int ID)
         {
-            CreateCategoryViewModel model = new CreateCategoryViewModel();
+            CreateAuctionViewModel model = new CreateAuctionViewModel();
 
             var auction = auctionsService.GetAuctionByID(ID);
 
@@ -123,7 +137,7 @@ namespace Marketplace.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(CreateCategoryViewModel model)
+        public ActionResult Edit(CreateAuctionViewModel model)
         {
 
             Auction auction = new Auction();

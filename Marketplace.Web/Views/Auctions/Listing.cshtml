@@ -85,7 +85,10 @@
 
             @for (int page = Model.Pager.StartPage; page < Model.Pager.EndPage + 1; page++)
             {
-                <li class="page-item">
+
+                var active = page == Model.Pager.CurrentPage ? "active" : string.Empty;
+
+                <li class="page-item @active">
                     <a class="page-link" href="@Url.Action("Index","Auctions", new { pageNo = page } )">
                         @page
                     </a>
