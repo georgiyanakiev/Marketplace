@@ -1,4 +1,5 @@
 ﻿using Marketplace.Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Data
 {
-    public class MarketplaceContext : DbContext
+    public class MarketplaceContext : IdentityDbContext<MarketplaceUser>
     {
         public MarketplaceContext() : base("name=MarketplaceConnectionString")
         {
@@ -18,6 +19,11 @@ namespace Marketplace.Data
         public DbSet<Auction> Auctions { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Category> Categories { get; set; }
+
+        public static MarketplaceContext Create()
+        {
+            return new MarketplaceContext();
+        }
 
     }
 }

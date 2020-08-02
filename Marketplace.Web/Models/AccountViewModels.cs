@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Marketplace.Web.ViewModels;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Marketplace.Web.Models
@@ -46,7 +47,7 @@ namespace Marketplace.Web.Models
         public string Email { get; set; }
     }
 
-    public class LoginViewModel
+    public class LoginViewModel : PageViewModel
     {
         [Required]
         [Display(Name = "Email")]
