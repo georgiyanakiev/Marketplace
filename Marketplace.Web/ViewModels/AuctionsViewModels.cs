@@ -27,7 +27,8 @@ namespace Marketplace.Web.ViewModels
     public class AuctionDetailsViewModel : PageViewModel
     {
         public Auction Auction { get; set; }
-        
+        public decimal BidsAmount { get; set; }
+        public MarketplaceUser LatestBider { get; set; }
     }
 
     public class CreateAuctionViewModel : PageViewModel

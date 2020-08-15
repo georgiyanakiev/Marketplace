@@ -81,6 +81,7 @@
     <Compile Include="Auction.cs" />
     <Compile Include="AuctionPicture.cs" />
     <Compile Include="BaseEntity.cs" />
+    <Compile Include="Bid.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="MarketplaceUser.cs" />
     <Compile Include="Picture.cs" />

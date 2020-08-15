@@ -15,10 +15,14 @@ namespace Marketplace.Data
         {
         }
 
-        public DbSet<AuctionPicture> AuctionPictures { get; set; }
+        
         public DbSet<Auction> Auctions { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<AuctionPicture> AuctionPictures { get; set; }
+        public DbSet<Bid> Bids { get; set; }
+
+
 
         public static MarketplaceContext Create()
         {
