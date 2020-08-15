@@ -14,7 +14,7 @@ namespace Marketplace.Entities
         public int CategoryID { get; set; }
 
         [Required]
-        [MinLength(15, ErrorMessage = "Minimum length should be 15 characters.")]
+        [MinLength(3, ErrorMessage = "Minimum length should be 3 characters.")]
         [MaxLength(150)]
         public string Title { get; set; }
         public string Description { get; set; }
@@ -28,6 +28,8 @@ namespace Marketplace.Entities
         public Nullable<DateTime> EndTime { get; set; }
 
         public virtual List<AuctionPicture> AuctionPictures { get; set; }
+
+        public List<Bid> Bids { get; set; }
 
 
     }

@@ -16,7 +16,7 @@ namespace Marketplace.Web
             routes.MapRoute(
                 name: "AuctionDetails",
                 url: "auction-details/{id}",
-                defaults: new { controller = "Auctions", action = "Details"}
+                defaults: new { controller = "Auctions", action = "Details" }
             );
 
             routes.MapRoute(

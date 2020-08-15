@@ -11,7 +11,7 @@ namespace Marketplace.Web.Controllers
 {
     public class AuctionsController : Controller
     {
-        AuctionsService auctionsService = new AuctionsService();
+        BidsServices auctionsService = new BidsServices();
 
         CategoriesService categoriesService = new CategoriesService();
 
@@ -152,7 +152,7 @@ namespace Marketplace.Web.Controllers
             auction.EndTime = model.EndTime;
 
             //check if we have AuctionPictureIds posted back from form
-            if(!string.IsNullOrEmpty(model.AuctionPictures))
+            if (!string.IsNullOrEmpty(model.AuctionPictures))
             {
 
                 //LINQ
@@ -188,6 +188,14 @@ namespace Marketplace.Web.Controllers
 
             model.Auction = auctionsService.GetAuctionByID(ID);
 
+
+            model.BidsAmount = model.Auction.ActualAmount + model.Auction.Bids.Sum(x => x.BidAmount);
+
+            var latestBidder = model.Auction.Bids.OrderByDescending(x => x.TimeStamp).FirstOrDefault();
+
+            model.LatestBider = latestBidder != null ? latestBidder.User : null;
+
+            model.LatestBider = model.Auction.Bids.OrderByDescending(x => x.TimeStamp).First().User;
             model.PageTitle = "Auctions Details: " + model.Auction.Title;
             model.PageDescription = model.Auction.Description.Substring(0, 10);
 
