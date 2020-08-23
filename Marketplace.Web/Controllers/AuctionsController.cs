@@ -210,7 +210,7 @@ namespace Marketplace.Web.Controllers
             JsonResult result = new JsonResult();
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
 
-            //result.Data = auctionsService.GetAllAuctions().Select(x => new { ID = x.ID, BidAmount = x.ActualAmount + x.Bids }) ;
+            result.Data = auctionsService.GetAllAuctions().Select(x => new { ID = x.ID, BidAmount = x.ActualAmount });
 
             return result;
         }
