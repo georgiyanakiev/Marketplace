@@ -21,6 +21,7 @@ namespace Marketplace.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<AuctionPicture> AuctionPictures { get; set; }
         public DbSet<Bid> Bids { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
 
 

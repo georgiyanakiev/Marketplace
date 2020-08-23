@@ -1,6 +1,6 @@
 ﻿@model Marketplace.Web.ViewModels.AuctionDetailsViewModel
 
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 <div class="row">
@@ -36,7 +36,7 @@
                             var active = auctionPicture == firstAuctionPicture ? "active" : string.Empty;
                             var picURL = "/Content/images/" + auctionPicture.Picture.URL;
 
-                            <div class="carousel-item @active">
+                            <div class="carousel-item @active text-center">
                                 <img class="d-block img-fluid" src="@picURL">
                             </div>
 
@@ -57,12 +57,12 @@
             <div class="card-body">
                 <h3 class="card-title">@Model.Auction.Title</h3>
                 <h4>
-                    £@Model.BidsAmount 
-                    
-                    @if(Model.LatestBider != null)
+                    £@Model.BidsAmount
+
+                    @if (Model.LatestBider != null)
                     {
-                        <text> 
-                          [  @Model.LatestBider.UserName ]
+                        <text>
+                            [  @Model.LatestBider.UserName ]
                         </text>
 
                     }
@@ -81,19 +81,85 @@
 
         <div class="card card-outline-secondary my-4">
             <div class="card-header">
-                Product Reviews
+                Comments
             </div>
+
+            @if (Model.Comments != null && Model.Comments.Count > 0)
+            {
+                foreach (var comment in Model.Comments)
+                {
+
+                    var defaultStars = 5 - comment.Rating;
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid" />
+                                    <p class="text-secondary text-center">@comment.TimeStamp</p>
+                                </div>
+                                <div class="col-md-10">
+                                    <p>
+                                        <a class="float-left" href="#">
+                                            <strong>@comment.UserID</strong>
+                                        </a>
+
+                                        <span class="text-warning float-right">
+
+                                            @for (int i = 1; i <= comment.Rating; i++)
+                                            {
+                                                <i class="fas fa-star"></i>
+
+                                            }
+
+                                            @for (int i = 1; i <= defaultStars; i++)
+                                            {
+                                                
+                                                <i class="far fa-star"></i>
+                                            }
+
+                                        </span>
+
+                                    </p>
+                                    <div class="clearfix"></div>
+                                    <p>
+                                        @comment.Text
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+
+            }
+            else
+            {
+                <p>There are no comments on this auction</p>
+                <hr />
+            }
+
             <div class="card-body">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                <hr>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                <hr>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                <hr>
-                <a href="#" class="btn btn-success">Leave a Review</a>
+                  <form id="commentForm">
+                    <input type="hidden" name="EntityID" value="@Model.EntityID" />
+                    <input type="hidden" name="RecordID" value="@Model.Auction.ID" />
+                    <div class="form-group">
+                        <label>Write Your Comment</label>
+                        <span class="text-warning float-right">
+                            <i class="ratingStar fas fa-star" data-value="1"></i>
+                            <i class="ratingStar far fa-star" data-value="2"></i>
+                            <i class="ratingStar far fa-star" data-value="3"></i>
+                            <i class="ratingStar far fa-star" data-value="4"></i>
+                            <i class="ratingStar far fa-star" data-value="5"></i>
+                        </span>
+
+                        <input type="hidden" name="Rating" id="ratingsValue" value="1" />
+
+                        <textarea class="form-control" rows="3" name="Text" placeholder="Write your comment here"></textarea>
+                    </div>
+                    <button class="btn btn-success" id="btnComment" type="button">Leave your comment</button>
+                </form>
+
             </div>
         </div>
         <!-- /.card -->
@@ -104,15 +170,49 @@
 </div>
 
 <script>
+    $(".ratingStar").hover(function () {
+        $(".ratingStar").addClass("far").removeClass("fas");
+
+
+        $(this).addClass("fas").removeClass("far");
+        $(this).prevAll(".ratingStar").addClass("fas").removeClass("far");
+    });
+
+    $(".ratingStar").click(function () {
+        var starValue = $(this).attr("data-value");
+
+
+        $("#ratingsValue").val(starValue);
+    });
+
     $("#btnBidNow").click(function () {
         $.ajax({
-            url: "@Url.Action("AddBid", "Bids")",
+            url: "@Url.Action("Bid", "Bids")",
             type: "post",
             data: {
                 ID: '@Model.Auction.ID'
             }
         }).done(function (response) {
-            if (response.Success) {
+            if (response.Success)
+            {
+                window.location.reload();
+            }
+            else {
+                swal("Error!", response.Message, "error");
+            }
+        }).fail(function () {
+            swal("Error!", " Please wait and try again later.", "error");
+        });
+    });
+
+      $("#btnComment").click(function () {
+        $.ajax({
+            url: "@Url.Action("LeaveComment", "Shared")",
+            type: "post",
+            data: $("#commentForm").serialize()
+        }).done(function (response) {
+            if (response.Success)
+            {
                 window.location.reload();
             }
             else {
