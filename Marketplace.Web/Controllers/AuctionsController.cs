@@ -15,7 +15,9 @@ namespace Marketplace.Web.Controllers
 
         CategoriesService categoriesService = new CategoriesService();
 
-        
+        SharedService sharedService = new SharedService();
+
+
         public ActionResult Index(int? categoryID, string searchTerm, int? pageNo)
         {
             AuctionsListingViewModel model = new AuctionsListingViewModel();
@@ -185,21 +187,32 @@ namespace Marketplace.Web.Controllers
         public ActionResult Details(int ID)
         {
             AuctionDetailsViewModel model = new AuctionDetailsViewModel();
+            model.EntityID = (int)EntityEnums.Auction;
 
             model.Auction = auctionsService.GetAuctionByID(ID);
-
-
             model.BidsAmount = model.Auction.ActualAmount + model.Auction.Bids.Sum(x => x.BidAmount);
 
             var latestBidder = model.Auction.Bids.OrderByDescending(x => x.TimeStamp).FirstOrDefault();
 
             model.LatestBider = latestBidder != null ? latestBidder.User : null;
 
-            model.LatestBider = model.Auction.Bids.OrderByDescending(x => x.TimeStamp).First().User;
+            model.Comments = sharedService.GetComments((int)EntityEnums.Auction, model.Auction.ID);
+
+
             model.PageTitle = "Auctions Details: " + model.Auction.Title;
             model.PageDescription = model.Auction.Description.Substring(0, 10);
 
             return View(model);
+        }
+
+        public JsonResult UpdateAuctions(string AuctionIDs)
+        {
+            JsonResult result = new JsonResult();
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+            result.Data = auctionsService.GetAllAuctions().Select(x => new { ID = x.ID, BidAmount = x.ActualAmount });
+
+            return result;
         }
     }
 }

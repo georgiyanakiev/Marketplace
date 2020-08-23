@@ -20,5 +20,23 @@ namespace Marketplace.Services
             return picture.ID;
         }
 
+        public bool LeaveComment(Comment comment)
+        {
+            MarketplaceContext context = new MarketplaceContext();
+
+            context.Comments.Add(comment);
+            return context.SaveChanges() > 0;
+
+           
+        }
+
+        public List<Comment> GetComments(int entityID, int recordID)
+        {
+            MarketplaceContext context = new MarketplaceContext();
+
+            return context.Comments.Where(x => x.EntityID == entityID && x.RecordID == recordID).ToList();
+
+
+        }
     }
 }
