@@ -13,18 +13,15 @@ namespace Marketplace.Data
     {
         public MarketplaceContext() : base("name=MarketplaceConnectionString")
         {
+            Database.SetInitializer<MarketplaceContext>(new MarketplaceDBInitializer());
         }
-
-        
         public DbSet<Auction> Auctions { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<AuctionPicture> AuctionPictures { get; set; }
         public DbSet<Bid> Bids { get; set; }
         public DbSet<Comment> Comments { get; set; }
-
-
-
+        
         public static MarketplaceContext Create()
         {
             return new MarketplaceContext();

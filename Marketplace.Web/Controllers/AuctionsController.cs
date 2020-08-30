@@ -74,6 +74,7 @@ namespace Marketplace.Web.Controllers
                 Auction auction = new Auction();
                 auction.Title = model.Title;
                 auction.CategoryID = model.CategoryID;
+                auction.Summary = model.Summary;
                 auction.Description = model.Description;
                 auction.ActualAmount = model.ActualAmount;
                 auction.StartTime = model.StartTime;
@@ -210,6 +211,7 @@ namespace Marketplace.Web.Controllers
             JsonResult result = new JsonResult();
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
 
+            
             result.Data = auctionsService.GetAllAuctions().Select(x => new { ID = x.ID, BidAmount = x.ActualAmount });
 
             return result;

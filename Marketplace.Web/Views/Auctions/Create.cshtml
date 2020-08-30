@@ -13,7 +13,7 @@
             <label>
                 Title
             </label>
-            <input class="form-control" name="Title" value="@Model.Title" />
+            <input class="form-control" name="Title" value="@Model.Title"  required minlength="3" maxlength="200"/>
         </div>
 
         <div class="form-group">
@@ -23,17 +23,22 @@
             <select class="form-control" name="CategoryID">
                 @foreach (var category in Model.Categories)
                 {
-                    <option value="@category.ID">
-                        @category.Name
-                    </option>
+                    var selected = Model.CategoryID == category.ID ? "selected" : string.Empty;
+                    <option value="@category.ID" @selected>@category.Name</option>
                 }
             </select>
         </div>
         <div class="form-group">
             <label>
+                Summary
+            </label>
+            <input class="form-control" name="Summary" value="@Model.Summary" placeholder="Add Summary" rows="3" minlength="12" maxlength="100" />
+        </div>
+        <div class="form-group">
+            <label>
                 Description
             </label>
-            <input class="form-control" name="Description" value="@Model.Description" required minlength="12" maxlength="100"/>
+            <input class="form-control" name="Description" value="@Model.Description" required minlength="12" maxlength="100" />
         </div>
         <div class="form-group">
             <label>
@@ -64,7 +69,7 @@
 
         </div>
         <div id="formErrors" class="form-group bg-danger" style="display:none">
-           
+
         </div>
     </div>
         <div class="modal-footer">
@@ -75,38 +80,68 @@
         </div>
 </form>
 
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 
 <script>
 
-    $('input[name="StartTime"]').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-        minYear: 1901,
-        maxYear: parseInt(moment().format('YYYY'), 10)
+    $('input[name = "StartTime"]').daterangepicker({
+        "singleDatePicker": true,
     });
-    $('input[name="EndTime"]').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-        minYear: 1901,
-        maxYear: parseInt(moment().format('YYYY'), 10)
+    $('input[name = "EndTime"]').daterangepicker({
+        "singleDatePicker": true,
     });
-
-
     $("#createForm").validate({
+        errorClass: "alert alert-danger",
+        errorElement: "div",
         rules: {
             Title: {
                 required: true,
                 minlength: 3,
                 maxlength: 150
-            }
+            },
+             CategoryID: {
+                required: true,
+            },
+            Summary: {
+                required: true,
+                minlength: 3,
+                maxlength: 150
+            },
+            Description: {
+                required: true,
+                minlength: 20,
+            },
+            ActualAmount: {
+                required: true,
+                range: [1, 10000000]
+            },
         },
         messages: {
             Title: {
                 required: "Title is required.",
                 minlength: "Minimum Length is 3",
                 maxlength: "Maximum Length is 150"
-            }
+            },
+            CategoryID: {
+                required: "Please select a category.",
+            },
+            Summary: {
+                required: "Summary is required.",
+                minlength: "Minimum Length is 3",
+                maxlength: "Maximum Length is 150"
+            },
+            Description: {
+                required: "Description is required.",
+                minlength: "Minimum Length is 3",
+                maxlength: "Maximum Length is 150"
+            },
+            ActualAmount: {
+                required: "ActualAmount is required.",
+                range: "Actual Amount must be between 1, 10000000.",
+            },
+        },
+        highlight: function (element, errorClass) {
+            $(element).removeClass(errorClass);
         }
     });
 
@@ -155,9 +190,9 @@
         }
         $.ajax({
             url: "@Url.Action("UploadPictures", "Shared")",
-            type: "POST",
+            type: "post",
             data: picsData,
-            dataType: "JSON",
+            dataType: "json",
             processData: false,
             contentType: false
         })
