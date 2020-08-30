@@ -19,8 +19,12 @@ namespace Marketplace.Web.Controllers
             vModel.PageTitle = "Marketplace";
             vModel.PageDescription = "Auctions Page";
 
+            var auctions = service.GetAllAuctions();
 
-            vModel.AllAuctions = service.GetAllAuctions();
+            vModel.AllAuctions = new List<Entities.Auction>();
+            vModel.AllAuctions.AddRange(auctions);
+
+            //vModel.AllAuctions.RemoveAt(0);
 
             vModel.PromotedAuctions = service.GetPromotedAuctions();
 

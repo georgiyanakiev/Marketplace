@@ -30,7 +30,6 @@ namespace Marketplace.Entities
         public virtual List<AuctionPicture> AuctionPictures { get; set; }
 
         public List<Bid> Bids { get; set; }
-
-
+        public string Summary { get; set; }
     }
 }

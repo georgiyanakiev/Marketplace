@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MarketplaceContext.cs" />
+    <Compile Include="MarketplaceDBInitializer.cs" />
     <Compile Include="Migrations\202007142326451_auctionEntityAdded.cs" />
     <Compile Include="Migrations\202007142326451_auctionEntityAdded.Designer.cs">
       <DependentUpon>202007142326451_auctionEntityAdded.cs</DependentUpon>
@@ -97,6 +98,14 @@
     <Compile Include="Migrations\202008231720349_ratingsComments.cs" />
     <Compile Include="Migrations\202008231720349_ratingsComments.designer.cs">
       <DependentUpon>202008231720349_ratingsComments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008302017383_summary.cs" />
+    <Compile Include="Migrations\202008302017383_summary.designer.cs">
+      <DependentUpon>202008302017383_summary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008302043360_Summary1.cs" />
+    <Compile Include="Migrations\202008302043360_Summary1.designer.cs">
+      <DependentUpon>202008302043360_Summary1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -141,6 +150,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008231720349_ratingsComments.resx">
       <DependentUpon>202008231720349_ratingsComments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008302017383_summary.resx">
+      <DependentUpon>202008302017383_summary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008302043360_Summary1.resx">
+      <DependentUpon>202008302043360_Summary1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -44,6 +44,7 @@ namespace Marketplace.Web.ViewModels
         [MinLength(15, ErrorMessage = "Minimum length should be 15 characters.")]
         [MaxLength(150)]
         public string Title { get; set; }
+        public string Summary { get; set; }
         public string Description { get; set; }
 
         [Required]
