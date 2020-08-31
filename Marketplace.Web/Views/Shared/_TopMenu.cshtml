@@ -23,7 +23,7 @@
                     if (User.IsInRole("Administrator"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Auctions")">Control Panel</a>
+                            <a class="nav-link" href="@Url.Action("Index", "Dashboard")">Dashboard</a>
                         </li>
                     }
 
@@ -48,9 +48,9 @@
     @Html.AntiForgeryToken()
 </form>
 
-<script>
-    $("#btnLogOff").click(function () {
-        $("#logOffForm").submit();
-    });
+    <script>
+        $("#btnLogOff").click(function () {
+            $("#logOffForm").submit();
+        });
 
-</script>
+    </script>

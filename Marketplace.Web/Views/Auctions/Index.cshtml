@@ -2,6 +2,7 @@
 
 
 @{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
     var categoryID = Model.CategoryID.HasValue ? Model.CategoryID.Value : 0;
 }
 <div class="row mt-2">
@@ -9,8 +10,8 @@
         <div class="float-left">
             <h2>Auctions</h2>
             <hr />
-            </div>
-            <div class="col-md-10">
+        </div>
+        <div class="col-md-10">
             <form method="post">
                 <div class="input-group mb-3">
                     <input name="searchTerm" type="text" value="@Model.SearchTerm" class="form-control" placeholder="Search" />
@@ -27,11 +28,11 @@
                     <a href="@Url.Action("Index","Auctions")" role="button" class="form-control btn btn-secondary"><i class="fas fa-sync col-md-3"></i>Reset</a>
                     <button type="button" class="form-control btn btn-success" id="createButton"><i class="fas fa-plus col-md-3"></i>New Auction</button>
                 </div>
-                    <input type="hidden" name="page" value="1" />
-                    <input type="hidden" name="items" value="10" />
-               </form>
+                <input type="hidden" name="page" value="1" />
+                <input type="hidden" name="items" value="10" />
+            </form>
         </div>
-     
+
         <div id="listingArea">
             @{Html.RenderAction("Listing", new { categoryID = Model.CategoryID, searchTerm = Model.CategoryID });}
         </div>
@@ -76,7 +77,10 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-<script>
+
+@section Scripts {
+
+    <script>
     $("#createButton").click(function () {
         $.ajax({
             url: "@Url.Action("Create", "Auctions")",
@@ -89,7 +93,7 @@
     $("#mDeleteButton").click(function () {
         $.ajax({
             url: "@Url.Action("Delete", "Auctions")",
-            type: "POST",
+            type: "post",
             data: {
                 ID: $(this).attr("data-recordID")
             }
@@ -123,4 +127,5 @@
     }
 
 
-</script>
+    </script>
+}

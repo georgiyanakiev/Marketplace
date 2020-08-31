@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Services
 {
-   public class BidsServices
+   public class AuctionsServices
     {
         public List<Auction> GetAllAuctions()
         {

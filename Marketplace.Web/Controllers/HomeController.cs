@@ -11,7 +11,7 @@ namespace Marketplace.Web.Controllers
     public class HomeController : Controller
     {
 
-        BidsServices service = new BidsServices();
+        AuctionsServices service = new AuctionsServices();
         public ActionResult Index()
         {
             AuctionsViewModel vModel = new AuctionsViewModel();

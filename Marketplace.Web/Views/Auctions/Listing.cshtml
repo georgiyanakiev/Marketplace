@@ -128,7 +128,9 @@
     </nav>
 }
 
-<script>
+@section Scripts {
+
+    <script>
     $(".editButton").click(function () {
         $.ajax({
             url: "@Url.Action("Edit", "Auctions")",
@@ -140,16 +142,16 @@
 
             $("#contentArea").html(response);
             $("#formModal").modal('toggle');
-        })
+        });
     });
 
     $(".deleteButton").click(function () {
         $("#deleteModal").modal('toggle');
         $('#mDeleteButton').attr("data-recordID", $(this).attr("data-id"))
     });
-</script>
+    </script>
 
-
+}
 
 
 

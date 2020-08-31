@@ -11,10 +11,9 @@ namespace Marketplace.Web.Controllers
 {
     public class AuctionsController : Controller
     {
-        BidsServices auctionsService = new BidsServices();
-
+       
+        AuctionsServices auctionsService = new AuctionsServices();
         CategoriesService categoriesService = new CategoriesService();
-
         SharedService sharedService = new SharedService();
 
 
@@ -211,7 +210,7 @@ namespace Marketplace.Web.Controllers
             JsonResult result = new JsonResult();
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
 
-            
+
             result.Data = auctionsService.GetAllAuctions().Select(x => new { ID = x.ID, BidAmount = x.ActualAmount });
 
             return result;
