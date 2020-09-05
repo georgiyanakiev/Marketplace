@@ -21,6 +21,7 @@ namespace Marketplace.Web
             app.CreatePerOwinContext(MarketplaceContext.Create);
             app.CreatePerOwinContext<MarketplaceUserManager>(MarketplaceUserManager.Create);
             app.CreatePerOwinContext<MarketplaceSignInManager>(MarketplaceSignInManager.Create);
+            app.CreatePerOwinContext<MarketplaceRoleManager>(MarketplaceRoleManager.Create);
 
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider

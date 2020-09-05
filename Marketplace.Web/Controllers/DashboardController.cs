@@ -17,14 +17,16 @@ namespace Marketplace.Web.Controllers
         DashboardService service = new DashboardService();
 
         private MarketplaceUserManager _userManager;
+        private MarketplaceRoleManager _roleManager;
 
         public DashboardController()
         {
         }
 
-        public DashboardController(MarketplaceUserManager userManager)
+        public DashboardController(MarketplaceUserManager userManager, MarketplaceRoleManager roleManager)
         {
             UserManager = userManager;
+            RoleManager = roleManager;
         }
 
 
@@ -37,6 +39,18 @@ namespace Marketplace.Web.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+
+        public MarketplaceRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<MarketplaceRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
             }
         }
 
@@ -63,7 +77,7 @@ namespace Marketplace.Web.Controllers
             model.SearchTerm = searchTerm;
             model.PageNo = pageNo;
 
-            model.Roles = new List<IdentityRole>();
+            model.Roles = RoleManager.Roles.ToList();
 
             return View(model);
         }
@@ -75,13 +89,31 @@ namespace Marketplace.Web.Controllers
 
             UsersListingViewModel model = new UsersListingViewModel();
 
-            model.Users = UserManager.Users.ToList();
-
             model.RoleID = roleID;
             model.SearchTerm = searchTerm;
             model.PageNo = pageNo;
 
-            model.Pager = new Pager(10, pageNo, pageSize);
+            //model.Users = UserManager.Users.ToList();
+
+            var users = UserManager.Users;
+
+            if (!string.IsNullOrEmpty(roleID))
+            {
+                //users = users.Where(x => x.Roles == categoryID.Value);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                users = users.Where(x => x.Email.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            pageNo = pageNo ?? 1;
+            
+            var skipCount = (pageNo.Value - 1) * pageSize;
+
+            model.Users = users.OrderBy(x => x.Email).Skip(skipCount).Take(pageSize).ToList();
+
+            model.Pager = new Pager(users.Count(), pageNo, pageSize);
 
             return PartialView(model);
         }
