@@ -1,22 +1,19 @@
-﻿@model Marketplace.Web.ViewModels.AuctionsListingViewModel
+﻿@model Marketplace.Web.ViewModels.UsersListingViewModel
 
 <table class="table table-hover">
-    <thead class="bg-secondary text-white" >
+    <thead class="bg-secondary text-white">
         <tr>
             <th>
-                Title
+                Name
             </th>
             <th>
-                Category
+                UserName
             </th>
             <th>
-                Summary
+                Email
             </th>
             <th>
-                Actual Amount
-            </th>
-            <th>
-                Bids
+                Roles
             </th>
             <th>
                 Actions
@@ -24,31 +21,28 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.Auctions != null && Model.Auctions.Count > 0)
+        @if (Model.Users != null && Model.Users.Count > 0)
         {
-            foreach (var auction in Model.Auctions)
+            foreach (var user in Model.Users)
             {
                 <tr>
                     <td>
-                        <input type="hidden" value="@auction.ID" />
-                        @auction.Title
+                        <input type="hidden" value="@user.Id" />
+                        @user.FullName
                     </td>
                     <td>
-                        @auction.Category.Name
+                        @user.UserName
                     </td>
                     <td>
-                        @auction.Summary
+                        @user.Email
                     </td>
                     <td>
-                        @auction.ActualAmount
+                        @user.Roles.Count
                     </td>
-                    <td>
-                        @auction.Bids
-                    </td>
-                    <td>
-                        <button class="editButton btn btn-outline-primary" data-id="@auction.ID" data-toggle="modal" data-target="#formModal">Edit</button>
-                        <button class="deleteButton btn btn-outline-danger" data-id="@auction.ID" data-toggle="modal" data-target="#deleteModal">Delete</button>
-
+                     <td>
+                        <button class="moreButton btn btn-outline-primary" data-id="@user.Id">
+                         <i class="fas fa-edit"></i>
+                         More Details</button>
                     </td>
                 </tr>
             }
@@ -57,7 +51,7 @@
         {
             <tr>
                 <td class="text-center" colspan="7">
-                    Ahhh sorry,no results found.
+                    Ahhh sorry,no users found.
                 </td>
             </tr>
         }
@@ -67,7 +61,7 @@
 
 </table>
 
-@if (Model.Pager != null && Model.Pager.TotalPages > 0)
+@if (Model.Pager != null && Model.Pager.TotalPages > 1)
 {
 
     <nav aria-label="Page navigation example">
@@ -84,7 +78,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index","Auctions", new { pageNo = Model.Pager.CurrentPage - 1, categoryID = Model.CategoryID, searchTerm = Model.SearchTerm })">Previous</a>
+                    <a class="page-link" href="@Url.Action("Users","Dashboard", new { pageNo = Model.Pager.CurrentPage - 1, roleID = Model.RoleID, searchTerm = Model.SearchTerm })">Previous</a>
                 </li>
             }
 
@@ -95,7 +89,7 @@
                 var active = page == Model.Pager.CurrentPage ? "active" : string.Empty;
 
                 <li class="page-item @active">
-                    <a class="page-link" href="@Url.Action("Index","Auctions", new { pageNo = page } )">
+                    <a class="page-link" href="@Url.Action("Users","Dashboard", new { pageNo = page, roleID = Model.RoleID, searchTerm = Model.SearchTerm } )">
                         @page
                     </a>
                 </li>
@@ -110,7 +104,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index","Auctions", new { pageNo = Model.Pager.CurrentPage + 1, categoryID = Model.CategoryID, searchTerm = Model.SearchTerm } )">Next</a>
+                    <a class="page-link" href="@Url.Action("Users","Dashboard", new { pageNo = Model.Pager.CurrentPage + 1, roleID = Model.RoleID, searchTerm = Model.SearchTerm } )">Next</a>
                 </li>
             }
 
@@ -121,10 +115,10 @@
 
 @section Scripts {
 
-    <script>
-    $(".editButton").click(function () {
-        $.ajax({
-            url: "@Url.Action("Edit", "Auctions")",
+ <script>
+     $(".moreButton").click(function () {
+        @*$.ajax({
+            url: "@Url.Action("Edit", "Dashboard")",
             method: "get",
             data: {
                 ID: $(this).attr("data-id")
@@ -133,16 +127,14 @@
 
             $("#contentArea").html(response);
             $("#formModal").modal('toggle');
-        });
+        });*@
     });
 
-    $(".deleteButton").click(function () {
-        $("#deleteModal").modal('toggle');
-        $('#mDeleteButton').attr("data-recordID", $(this).attr("data-id"))
-    });
-    </script>
+ 
+ </script>
 
 }
+
 
 
 
