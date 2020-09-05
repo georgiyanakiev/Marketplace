@@ -99,7 +99,8 @@ namespace Marketplace.Web.Controllers
 
             if (!string.IsNullOrEmpty(roleID))
             {
-                //users = users.Where(x => x.Roles == categoryID.Value);
+                
+                users = users.Where(x => x.Roles.FirstOrDefault(y => y.RoleId == roleID) != null);
             }
 
             if (!string.IsNullOrEmpty(searchTerm))
