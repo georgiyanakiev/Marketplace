@@ -17,14 +17,16 @@ namespace Marketplace.Web.Controllers
         DashboardService service = new DashboardService();
 
         private MarketplaceUserManager _userManager;
+        private MarketplaceRoleManager _roleManager;
 
         public DashboardController()
         {
         }
 
-        public DashboardController(MarketplaceUserManager userManager)
+        public DashboardController(MarketplaceUserManager userManager, MarketplaceRoleManager roleManager)
         {
             UserManager = userManager;
+            RoleManager = roleManager;
         }
 
 
@@ -37,6 +39,18 @@ namespace Marketplace.Web.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+
+        public MarketplaceRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<MarketplaceRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
             }
         }
 
@@ -63,7 +77,7 @@ namespace Marketplace.Web.Controllers
             model.SearchTerm = searchTerm;
             model.PageNo = pageNo;
 
-            model.Roles = new List<IdentityRole>();
+            model.Roles = RoleManager.Roles.ToList();
 
             return View(model);
         }
