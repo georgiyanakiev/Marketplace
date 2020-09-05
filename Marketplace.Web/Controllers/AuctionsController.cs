@@ -21,6 +21,7 @@ namespace Marketplace.Web.Controllers
         {
             AuctionsListingViewModel model = new AuctionsListingViewModel();
 
+            model.Page = Pages.Auctions;
             model.PageTitle = "Auctions";
             model.PageDescription = "Auctions Listing Page";
 
@@ -37,7 +38,7 @@ namespace Marketplace.Web.Controllers
         public ActionResult Listing(int? categoryID, string searchTerm, int? pageNo)
         {
 
-            var pageSize = 5;
+            var pageSize = 3;
 
             AuctionsListingViewModel model = new AuctionsListingViewModel();
 
@@ -47,6 +48,22 @@ namespace Marketplace.Web.Controllers
 
 
             model.Pager = new Pager(totalAuctions,pageNo, pageSize);
+
+            return PartialView(model);
+        }
+        public ActionResult SearchAuctions(int? categoryID, string searchTerm, int? pageNo)
+        {
+
+            var pageSize = 5;
+
+            AuctionsListingViewModel model = new AuctionsListingViewModel();
+
+            model.Auctions = auctionsService.SearchAuctions(categoryID, searchTerm, pageNo, pageSize);
+
+            var totalAuctions = auctionsService.GetAuctionCount(categoryID, searchTerm);
+
+
+            model.Pager = new Pager(totalAuctions, pageNo, pageSize);
 
             return PartialView(model);
         }

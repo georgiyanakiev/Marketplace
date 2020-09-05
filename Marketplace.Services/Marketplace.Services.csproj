@@ -81,6 +81,7 @@
     <Compile Include="BidsService.cs" />
     <Compile Include="CategoriesService.cs" />
     <Compile Include="AuctionsService.cs" />
+    <Compile Include="DashboardService.cs" />
     <Compile Include="MarketplaceSignInManager.cs" />
     <Compile Include="MarketplaceUserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
