@@ -12,7 +12,10 @@ namespace Marketplace.Web.ViewModels
         public int UserCount { get; set; }
         public int AuctionsCount { get; set; }
         public int BidsCount { get; set; }
-        
+        public int Categories { get; set; }
+        public int Roles { get; set; }
+        public int Comments { get; set; }
+
     }
 
    public class UsersViewModel : PageViewModel
@@ -39,6 +42,12 @@ namespace Marketplace.Web.ViewModels
     public class UserDetailsViewModel : PageViewModel
     {
         public MarketplaceUser User { get; set; }
+
+        public string ID  { get; set; }
+        public string FullName { get; set; }
+        public string Country { get; set; }
+        public string City { get; set; }
+        public string Address { get; set; }
     }
     public class UserRolesViewModel : PageViewModel
     {
@@ -53,8 +62,6 @@ namespace Marketplace.Web.ViewModels
         public int? PageNo { get; set; }
         
     }
-   
-
     public class RoleListingViewModel : PageViewModel
     {
         public List<IdentityRole> Roles { get; set; }
@@ -62,4 +69,35 @@ namespace Marketplace.Web.ViewModels
         public string SearchTerm { get; set; }
         
     }
+    public class RoleDetailsViewModel : PageViewModel
+    {
+        public IdentityRole Role { get; set; }
+
+        public string ID { get; set; }
+        public string Name { get; set; }
+
+    }
+
+    public class RoleUsersViewModel : PageViewModel
+    {
+        public List<MarketplaceUser> RoleUsers { get; set; }
+
+        public Pager Pager { get; set; }
+        public string RoleID { get; set; }
+       
+
+    }
+    public class UserCommentsViewModel : PageViewModel
+    {
+
+        public List<Comment> UserComments { get; set; }
+        public MarketplaceUser User { get; set; }
+    }
+    public class CommentablePageViewModel : PageViewModel
+    {
+        public List<Comment> Comments { get; set; }
+        public List<Comment> UserComments { get; set; }
+        public MarketplaceUser User { get; set; }
+    }
+
 }

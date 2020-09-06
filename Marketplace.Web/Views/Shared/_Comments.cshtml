@@ -1,0 +1,59 @@
+﻿@model Marketplace.Web.ViewModels.CommentablePageViewModel
+@{
+    var haveComments = Model.Comments != null && Model.Comments.Count > 0;
+}
+
+<div class="card card-outline-secondary my-4">
+    <div class="card-header @(!haveComments ? "border-bottom-0" : string.Empty)">
+        <h5 class="mb-0">
+            @string.Format("{0} {1}", haveComments ? Model.Comments.Count : 0, haveComments && Model.Comments.Count > 1);
+        </h5>
+    </div>
+
+
+    @if (haveComments)
+    {
+        <div class="card-body">
+            @foreach (var comment in Model.Comments)
+            {
+                var defaultStars = 5 - comment.Rating;
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <img src="~/Content/images/user.png" class="img-fluid rounded-circle img-fluid"/>
+                    </div>
+                    <div class="col-md-10">
+                        <p>
+                            <a class="float-left" href="#">
+                                <strong>@Model.User.UserName</strong>
+                            </a>
+                            <span class="float-right mb-2" href="#">
+                                <strong>@comment.TimeStamp</strong>
+                            </span>
+                        </p>
+                        <div class="clearfix"></div>
+                        <p>
+                            @comment.Text
+                        </p>
+                        <span class="text-warning">
+                            @for (int i = 1; i <= comment.Rating; i++)
+                            {
+                                <i class="fas fa-star"></i>
+                            }
+
+                            @for (int i = 1; i <= defaultStars; i++)
+                            {
+                                <i class="far fa-star"></i>
+                            }
+                        </span>
+                    </div>
+                </div>
+
+                if (comment != Model.Comments.Last())
+                {
+                    <hr />
+                }
+            }
+             </div>  
+    }
+</div>

@@ -10,7 +10,7 @@
     <hr class="my-4">
 </div>
 
-<div class="card-deck text-primary">
+<div class="card-deck text-secondary">
     <div class="card text-center">
         <h1 class="card-title display-2 align-middle">
             @Model.UserCount
@@ -36,4 +36,31 @@
         </div>
     </div>
 </div>
-
+<br />
+<div class="card-deck text-secondary">
+    <div class="card text-center">
+        <h1 class="card-title display-2 align-middle">
+            @Model.Categories
+        </h1>
+        <div class="card-footer display-4">
+            <a href="@Url.Action("Index","Categories")"> Categories</a>
+        </div>
+    </div>
+    <div class="card text-center">
+        <h1 class="card-title display-2 align-middle">
+            @Model.Roles
+        </h1>
+        <div class="card-footer display-4">
+            <a href="@Url.Action("Index","Roles")"> Roles</a>
+        </div>
+    </div>
+    <div class="card text-center">
+        <h1 class="card-title display-2 align-middle">
+            @Model.Comments
+        </h1>
+        <div class="card-footer display-4">
+            <a href="@Url.Action("Index","Comments")"> Comments</a>
+        </div>
+    </div>
+</div>
+<br />

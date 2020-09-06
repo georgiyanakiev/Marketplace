@@ -1,0 +1,42 @@
+﻿@model Marketplace.Web.ViewModels.UserCommentsViewModel
+
+@if(Model != null && Model.UserComments != null)
+{
+    foreach (var comment in Model.UserComments)
+    {
+        var defaultStars = 5 - comment.Rating;
+       <div class="row">
+           <div class="col-md-2">
+               <img src="~/Content/images/user.png" class="img-fluid rounded-circle img-fluid" />
+            </div>
+           <div class="col-md-10">
+               <p>
+                   <a class="float-left" href="#">
+                       <strong>
+                           @Model.User.UserName
+                       </strong>
+                   </a>
+                   <span class="float-right mb-2">
+                       @comment.TimeStamp
+                   </span>
+               </p>
+               <div class="clearfix"></div>
+               <p>
+                   @comment.Text
+               </p>
+               <span class="text-warning">
+                   @for (int i = 1; i <= comment.Rating; i++)
+                   {
+                       <i class="fas fa-star"></i>
+                   }
+
+                   @for (int i = 1; i <= defaultStars; i++)
+                   {
+                       <i class="far fa-star"></i>
+                   }
+               </span>
+           </div>
+       </div>
+
+    }
+}
