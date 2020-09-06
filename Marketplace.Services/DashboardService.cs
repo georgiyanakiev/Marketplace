@@ -28,5 +28,31 @@ namespace Marketplace.Services
 
             return context.Bids.Count();
         }
+        public int GetCommentsCount()
+        {
+            MarketplaceContext context = new MarketplaceContext();
+
+            return context.Comments.Count();
+        }
+        public int GetRolesCount()
+        {
+            MarketplaceContext context = new MarketplaceContext();
+
+            return context.Roles.Count();
+        }
+        public int GetCategoriesCount()
+        {
+            MarketplaceContext context = new MarketplaceContext();
+
+            return context.Categories.Count();
+        }
+
+        public List<Comment> GetCommentsByUser(string userID)
+        {
+            MarketplaceContext context = new MarketplaceContext();
+
+            return context.Comments.Where(x => x.UserID == userID).OrderByDescending(x => x.TimeStamp).ToList();
+        }
+
     }
 }

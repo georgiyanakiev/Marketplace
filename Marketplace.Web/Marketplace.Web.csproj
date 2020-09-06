@@ -401,6 +401,10 @@
     <Content Include="Views\Bids\Index.cshtml" />
     <Content Include="Views\Dashboard\_UsersRoles.cshtml" />
     <Content Include="Views\Dashboard\_UsersDetails.cshtml" />
+    <Content Include="Views\Dashboard\_RoleDetails.cshtml" />
+    <Content Include="Views\Dashboard\RoleDetails .cshtml" />
+    <Content Include="Views\Dashboard\_UsersComments.cshtml" />
+    <Content Include="Views\Shared\_Comments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

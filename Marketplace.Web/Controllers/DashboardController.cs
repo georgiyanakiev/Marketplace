@@ -248,6 +248,129 @@ namespace Marketplace.Web.Controllers
 
             return PartialView(model);
         }
+        //public async Task<ActionResult> RoleDetails(string roleID)
+        //{
+        //    if (!string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
+        //    {
+        //        var user = await UserManager.FindByIdAsync(userID);
 
+        //        if (user != null)
+        //        {
+        //            var role = await RoleManager.FindByIdAsync(roleID);
+
+        //            if (role != null)
+        //            {
+        //                await UserManager.AddToRolesAsync(userID, role.Name);
+        //            }
+
+        //        }
+        //    }
+
+        //    return RedirectToAction("UsersRoles", new { userID = userID });
+        //}
+
+        //public async Task<ActionResult> RoleUsers(string roleID, int? pageNo)
+        //{
+        //    if (string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
+        //    {
+        //        var user = await UserManager.FindByIdAsync(userID);
+
+        //        if (user != null)
+        //        {
+        //            var role = await RoleManager.FindByIdAsync(roleID);
+
+        //            if (role != null)
+        //            {
+        //                await UserManager.RemoveFromRoleAsync(userID, role.Name);
+        //            }
+
+        //        }
+        //    }
+
+        //    return RedirectToAction("UsersRoles", new { userID = userID });
+        //}
+        //[HttpPost]
+        //public async Task<JsonResult> CreateRole(string roleName)
+        //{
+        //    if (string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
+        //    {
+        //        var user = await UserManager.FindByIdAsync(userID);
+
+        //        if (user != null)
+        //        {
+        //            var role = await RoleManager.FindByIdAsync(roleID);
+
+        //            if (role != null)
+        //            {
+        //                await UserManager.RemoveFromRoleAsync(userID, role.Name);
+        //            }
+
+        //        }
+        //    }
+
+        //    return RedirectToAction("UsersRoles", new { userID = userID });
+        //}
+        //[HttpPost]
+        //public async Task<JsonResult> UpdateRoleDetails(string roleID, string roleName)
+        //{
+        //    if (string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
+        //    {
+        //        var user = await UserManager.FindByIdAsync(userID);
+
+        //        if (user != null)
+        //        {
+        //            var role = await RoleManager.FindByIdAsync(roleID);
+
+        //            if (role != null)
+        //            {
+        //                await UserManager.RemoveFromRoleAsync(userID, role.Name);
+        //            }
+
+        //        }
+        //    }
+
+        //    return RedirectToAction("UsersRoles", new { userID = userID });
+        //}
+        //[HttpPost]
+        //public async Task<JsonResult> DeleteRoleDetails(string roleID)
+        //{
+        //    if (string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
+        //    {
+        //        var user = await UserManager.FindByIdAsync(userID);
+
+        //        if (user != null)
+        //        {
+        //            var role = await RoleManager.FindByIdAsync(roleID);
+
+        //            if (role != null)
+        //            {
+        //                await UserManager.RemoveFromRoleAsync(userID, role.Name);
+        //            }
+
+        //        }
+        //    }
+
+        //    return RedirectToAction("UsersRoles", new { userID = userID });
+        //}
+
+        public async Task<ActionResult> UsersComments(string userID)
+        {
+
+            UserCommentsViewModel model = new UserCommentsViewModel();
+
+            if (!string.IsNullOrEmpty(userID))
+            {
+                model.User = await UserManager.FindByIdAsync(userID);
+
+                if (model.User != null)
+                {
+
+                    model.UserComments = service.GetCommentsByUser(userID);
+                }
+            }
+
+
+            return PartialView("_UsersComments", model);
+        }
     }
 }
