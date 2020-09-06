@@ -1,13 +1,82 @@
 ﻿@model Marketplace.Web.ViewModels.UserDetailsViewModel
 @{
-    ViewBag.Title = "UsersDetails";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
 }
 
 @if (Model != null && Model.User != null)
 {
-    <h2>
-        @Model.User.UserName
-    </h2>
+    <div class="row mt2">
+        <div class="col-lg-12 col-md-12">
+            <h2>User Details</h2>
+            <hr />
+        </div>
+        <div class="col-lg-3">
+            <div class="card">
+                <img src="~/Content/images/user.png" class="card-img-top" alt="user" />
+                <div class="card-body">
+                    <h5 class="card-title m-0">@Model.User.FullName</h5>
+                </div>
+                <ul class="list-group list-group flush">
+                    <li class="list-group-item" title="Username">
+                        <i class="fas fa-user-alt mr-1"></i>
+                        @Model.User.UserName
+                    </li>
+                    @if (!string.IsNullOrEmpty(Model.User.Country) || !string.IsNullOrEmpty(Model.User.City))
+                    {
+                        <li class="list-group-item" title="Location">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            @string.Format("{0}{1}{2}", !string.IsNullOrEmpty(Model.User.City) ? Model.User.City : string.Empty, !string.IsNullOrEmpty(Model.User.City) && !string.IsNullOrEmpty(Model.User.Country) ? ",  " : string.Empty, Model.User.Country)
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="user-link nav-link active" data-href="@Url.Action("UsersDetails","Dashboard", new { userID = Model.User.Id })">Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="user-link nav-link" data-href="@Url.Action("UsersRoles","Dashboard", new { userID = Model.User.Id })">Roles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="user-link nav-link" href="#" data-href="@Url.Action("UsersBids","Dashboard", new { userID = Model.User.Id })">Bids</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="user-link nav-link" href="#" data-href="@Url.Action("UsersComments","Dashboard", new { userID = Model.User.Id })">Comments</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body" id="response-holder">
+                    @{
+                        Html.RenderPartial("_UsersDetails", Model);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(".user-link").click(function () {
+            var url = $(this).attr("data-href");
+
+            if (url != undefined && url != "") {
+                $(".modal-loader").show();
+                $(".user-link").removeClass("active");
+                $(this).addClass("active");
+
+                $.ajax({
+                    url: url,
+                })
+                    .done(function (response) {
+                        $(".modal-loader").hide();
+                        $("#response-holder").html(response);
+                    });
+            }
+        });
+
+    </script>
 }
 else
 {

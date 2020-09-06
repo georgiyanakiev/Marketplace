@@ -25,7 +25,7 @@
                 <tr>
                     <td>
                         <input type="hidden" value="@role.Id" />
-                       
+                        @role.Id
                     </td>
                     <td>
                         @role.Name
@@ -33,11 +33,15 @@
                     <td>
                         @role.Users
                     </td>
-                      <td>
-                        <button class="moreButton btn btn-outline-primary" data-id="@role.Id">
+                    <td>
+                        @*<button class="moreButton btn btn-outline-primary" data-id="@role.Id">
                             <i class="fas fa-edit"></i>
                             More Details
-                        </button>
+                        </button>*@
+                        <a href="@Url.Action("UsersRoles", "Dashboard", new { roleID = role.Id })" class="moreButton btn btn-outline-primary">
+                            <i class="fas fa-edit"></i>
+                            More Details
+                        </a>
                     </td>
                 </tr>
             }
@@ -112,8 +116,8 @@
 
     <script>
      $(".moreButton").click(function () {
-        @*$.ajax({
-            url: "@Url.Action("Edit", "Dashboard")",
+        $.ajax({
+            url: "@Url.Action("Roles", "Dashboard")",
             method: "get",
             data: {
                 ID: $(this).attr("data-id")
@@ -122,7 +126,7 @@
 
             $("#contentArea").html(response);
             $("#formModal").modal('toggle');
-        });*@
+        });
     });
 
 
