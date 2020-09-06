@@ -394,11 +394,14 @@
     <Content Include="Views\Shared\_DashboardLayout.cshtml" />
     <Content Include="Views\Dashboard\Users.cshtml" />
     <Content Include="Views\Dashboard\UsersListing.cshtml" />
+    <Content Include="Views\Dashboard\RolesListing.cshtml" />
+    <Content Include="Views\Dashboard\Roles.cshtml" />
+    <Content Include="Views\Dashboard\UsersDetails.cshtml" />
+    <Content Include="Views\Bids\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\images\" />
-    <Folder Include="Views\Bids\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

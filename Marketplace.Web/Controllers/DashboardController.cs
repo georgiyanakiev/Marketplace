@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -85,7 +86,7 @@ namespace Marketplace.Web.Controllers
         public ActionResult UsersListing(string roleID, string searchTerm, int? pageNo)
         {
 
-            var pageSize = 3;
+            var pageSize = 10;
 
             UsersListingViewModel model = new UsersListingViewModel();
 
@@ -115,6 +116,67 @@ namespace Marketplace.Web.Controllers
             model.Users = users.OrderBy(x => x.Email).Skip(skipCount).Take(pageSize).ToList();
 
             model.Pager = new Pager(users.Count(), pageNo, pageSize);
+
+            return PartialView(model);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> UsersDetails(string userID)
+        {
+
+            UserDetailsViewModel model = new UserDetailsViewModel();
+
+            var user = await UserManager.FindByIdAsync(userID);
+
+            if(user != null)
+            {
+                model.User = user;
+            }
+
+            return View(model);
+        }
+
+
+        public ActionResult Roles(string roleID, string searchTerm, int? pageNo)
+        {
+            UsersViewModel model = new UsersViewModel();
+
+            model.PageTitle = "Roles";
+            model.PageDescription = "Roles Listing Page";
+
+            model.RoleID = roleID;
+            model.SearchTerm = searchTerm;
+            model.PageNo = pageNo;
+
+            model.Roles = RoleManager.Roles.ToList();
+
+            return View(model);
+        }
+        public ActionResult RolesListing(string searchTerm, int? pageNo)
+        {
+
+            var pageSize = 10;
+
+            RoleListingViewModel model = new RoleListingViewModel();
+
+            
+            model.SearchTerm = searchTerm;
+            
+            var roles = RoleManager.Roles;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                roles = roles.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            pageNo = pageNo ?? 1;
+
+          
+            var skipCount = (pageNo.Value - 1) * pageSize;
+
+            model.Roles = roles.OrderBy(x => x.Name).Skip(skipCount).Take(pageSize).ToList();
+
+            model.Pager = new Pager(roles.Count(), pageNo, pageSize);
 
             return PartialView(model);
         }

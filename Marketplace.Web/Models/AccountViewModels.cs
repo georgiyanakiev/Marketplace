@@ -64,6 +64,16 @@ namespace Marketplace.Web.Models
 
     public class RegisterViewModel : PageViewModel
     {
+
+        [MaxLength(20, ErrorMessage = "The FullName must be at most 20 characters long.")]
+        [Required]
+        public string FullName { get; set; }
+        public string Country { get; set; }
+        public string City { get; set; }
+        public string Address { get; set; }
+
+
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

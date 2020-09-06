@@ -111,6 +111,10 @@
     <Compile Include="Migrations\202009042300312_UserListing.designer.cs">
       <DependentUpon>202009042300312_UserListing.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009052338193_addedroles.cs" />
+    <Compile Include="Migrations\202009052338193_addedroles.designer.cs">
+      <DependentUpon>202009052338193_addedroles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -163,6 +167,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009042300312_UserListing.resx">
       <DependentUpon>202009042300312_UserListing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009052338193_addedroles.resx">
+      <DependentUpon>202009052338193_addedroles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
