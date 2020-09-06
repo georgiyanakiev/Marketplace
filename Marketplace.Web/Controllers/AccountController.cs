@@ -153,10 +153,13 @@ namespace Marketplace.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new MarketplaceUser { UserName = model.Email, Email = model.Email };
+                var user = new MarketplaceUser { UserName = model.Username, Email = model.Email, FullName = model.FullName, Country = model.Country, City = model.City, Address = model.Address };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+
+                   await UserManager.AddToRoleAsync(user.Id, "User");
+
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

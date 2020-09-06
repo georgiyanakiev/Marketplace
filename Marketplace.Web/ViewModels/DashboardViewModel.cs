@@ -23,6 +23,9 @@ namespace Marketplace.Web.ViewModels
         public string FullName { get; set; }
         public int? PageNo { get; set; }
     }
+   
+
+
 
     public class UsersListingViewModel : PageViewModel
     {
@@ -31,5 +34,24 @@ namespace Marketplace.Web.ViewModels
         public string RoleID { get; set; }
         public string SearchTerm { get; set; }
         public int? PageNo { get;  set; }
+    }
+
+    public class UserDetailsViewModel : PageViewModel
+    {
+        public MarketplaceUser User { get; set; }
+    }
+    public class RolesViewModel : PageViewModel
+    {
+        public string SearchTerm { get; set; }
+        public int? PageNo { get; set; }
+    }
+
+
+    public class RoleListingViewModel : PageViewModel
+    {
+        public List<IdentityRole> Roles { get; set; }
+        public Pager Pager { get; set; } 
+        public string SearchTerm { get; set; }
+        
     }
 }
