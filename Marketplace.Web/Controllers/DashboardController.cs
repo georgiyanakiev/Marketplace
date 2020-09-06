@@ -121,7 +121,7 @@ namespace Marketplace.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> UsersDetails(string userID)
+        public async Task<ActionResult> UsersDetails(string userID, bool isPartial = false)
         {
 
             UserDetailsViewModel model = new UserDetailsViewModel();
@@ -132,11 +132,79 @@ namespace Marketplace.Web.Controllers
             {
                 model.User = user;
             }
+            if(isPartial || Request.IsAjaxRequest())
+            {
+                return PartialView("_UsersDetails", model);
+            }
+            else
+            {
+                return View(model);
+            }
 
-            return View(model);
         }
 
+        public async Task<ActionResult> UsersRoles(string userID)
+        {
 
+            UserRolesViewModel model = new UserRolesViewModel();
+
+            model.AvailableRoles = RoleManager.Roles.ToList();
+
+            if(!string.IsNullOrEmpty(userID))
+            {
+               model.User = await UserManager.FindByIdAsync(userID);
+
+                if(model.User != null)
+                {
+                    model.UserRoles = model.User.Roles.Select(userRole => model.AvailableRoles.FirstOrDefault(role => role.Id == userRole.RoleId)).ToList();
+                }
+            }
+
+            
+            return PartialView("_UsersRoles", model);
+        }
+
+        public async Task<ActionResult> AssignUserRole(string userID, string roleID)
+        {
+            if(!string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
+            {
+                var user = await UserManager.FindByIdAsync(userID); 
+
+                if (user != null)
+                {
+                    var role = await RoleManager.FindByIdAsync(roleID);
+
+                    if(role != null)
+                    {
+                        await UserManager.AddToRolesAsync(userID, role.Name);
+                    }
+                   
+                }
+            }
+
+            return RedirectToAction("UsersRoles", new {  userID = userID }); 
+        }
+
+        public async Task<ActionResult> DeleteUserRole(string userID, string roleID)
+        {
+            if (string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
+            {
+                var user = await UserManager.FindByIdAsync(userID);
+
+                if (user != null)
+                {
+                    var role = await RoleManager.FindByIdAsync(roleID);
+
+                    if (role != null)
+                    {
+                        await UserManager.RemoveFromRoleAsync(userID, role.Name);
+                    }
+
+                }
+            }
+
+            return RedirectToAction("UsersRoles", new { userID = userID });
+        }
         public ActionResult Roles(string roleID, string searchTerm, int? pageNo)
         {
             UsersViewModel model = new UsersViewModel();

@@ -40,12 +40,20 @@ namespace Marketplace.Web.ViewModels
     {
         public MarketplaceUser User { get; set; }
     }
+    public class UserRolesViewModel : PageViewModel
+    {
+  
+        public List<IdentityRole> AvailableRoles { get; set; }
+        public List<IdentityRole> UserRoles { get; set; }
+        public MarketplaceUser User { get; set; }
+    }
     public class RolesViewModel : PageViewModel
     {
         public string SearchTerm { get; set; }
         public int? PageNo { get; set; }
+        
     }
-
+   
 
     public class RoleListingViewModel : PageViewModel
     {

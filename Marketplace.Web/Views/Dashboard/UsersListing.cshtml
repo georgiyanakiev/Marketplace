@@ -4,7 +4,16 @@
     <thead class="bg-secondary text-white">
         <tr>
             <th>
-                Name
+                Full Name
+            </th>
+            <th>
+                Country
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                Address
             </th>
             <th>
                 UserName
@@ -25,27 +34,36 @@
         {
             foreach (var user in Model.Users)
             {
-                <tr>
-                    <td>
-                        <input type="hidden" value="@user.Id" />
-                        @user.FullName
-                    </td>
-                    <td>
-                        @user.UserName
-                    </td>
-                    <td>
-                        @user.Email
-                    </td>
-                    <td>
-                        @user.Roles.Count
-                    </td>
-                     <td>
-                        <a href="@Url.Action("UsersDetails", "Dashboard", new { userID = user.Id })" class="moreButton btn btn-outline-primary">
-                         <i class="fas fa-edit"></i>
-                         More Details
-                        </a>
-                    </td>
-                </tr>
+        <tr>
+            <td>
+                <input type="hidden" value="@user.Id" />
+                @user.FullName
+            </td>
+            <td>
+                @user.Country
+            </td>
+            <td>
+                @user.City
+            </td>
+            <td>
+                @user.Address
+            </td>
+            <td>
+                @user.UserName
+            </td>
+            <td>
+                @user.Email
+            </td>
+            <td>
+                @user.Roles.Count
+            </td>
+            <td>
+                <a href="@Url.Action("UsersDetails", "Dashboard", new { userID = user.Id })" class="moreButton btn btn-outline-primary">
+                    <i class="fas fa-edit"></i>
+                    More Details
+                </a>
+            </td>
+        </tr>
             }
         }
         else
