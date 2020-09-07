@@ -47,11 +47,11 @@ namespace Marketplace.Services
             return context.Categories.Count();
         }
 
-        public List<Comment> GetCommentsByUser(string userID)
+        public List<Comment> GetCommentsByUser(string userID, int entityID)
         {
             MarketplaceContext context = new MarketplaceContext();
 
-            return context.Comments.Where(x => x.UserID == userID).OrderByDescending(x => x.TimeStamp).ToList();
+            return context.Comments.Where(x => x.UserID == userID).Where(x => x.EntityID == entityID).OrderByDescending(x => x.TimeStamp).ToList();
         }
 
     }

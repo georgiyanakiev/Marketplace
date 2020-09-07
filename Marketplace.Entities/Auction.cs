@@ -31,5 +31,6 @@ namespace Marketplace.Entities
 
         public List<Bid> Bids { get; set; }
         public string Summary { get; set; }
+        public decimal BidAmount { get; set; }
     }
 }

@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Linq;
 using System.Web;
+
 
 namespace Marketplace.Web.ViewModels
 {
@@ -31,7 +33,8 @@ namespace Marketplace.Web.ViewModels
         public List<Comment> Comments { get; set; }
         public decimal BidsAmount { get; set; }
         public MarketplaceUser LatestBider { get; set; }
-        public int EntityID { get; internal set; }
+        public int EntityID { get; set; }
+        public int RecordID { get; set; }
     }
 
     public class CreateAuctionViewModel : PageViewModel
