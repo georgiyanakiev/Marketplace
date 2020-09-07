@@ -27,7 +27,7 @@ namespace Marketplace.Web.Controllers
 
             model.CategoryID = categoryID;
             model.SearchTerm = searchTerm;
-            model.PageNo = pageNo;
+            model.PageNo = pageNo ?? 1;
 
             model.Categories = categoriesService.GetAllCategories();
 
@@ -51,22 +51,22 @@ namespace Marketplace.Web.Controllers
 
             return PartialView(model);
         }
-        public ActionResult SearchAuctions(int? categoryID, string searchTerm, int? pageNo)
-        {
+        //public ActionResult SearchAuctions(int? categoryID, string searchTerm, int? pageNo)
+        //{
 
-            var pageSize = 5;
+        //    var pageSize = 5;
 
-            AuctionsListingViewModel model = new AuctionsListingViewModel();
+        //    AuctionsListingViewModel model = new AuctionsListingViewModel();
 
-            model.Auctions = auctionsService.SearchAuctions(categoryID, searchTerm, pageNo, pageSize);
+        //    model.Auctions = auctionsService.SearchAuctions(categoryID, searchTerm, pageNo, pageSize);
 
-            var totalAuctions = auctionsService.GetAuctionCount(categoryID, searchTerm);
+        //    var totalAuctions = auctionsService.GetAuctionCount(categoryID, searchTerm);
 
 
-            model.Pager = new Pager(totalAuctions, pageNo, pageSize);
+        //    model.Pager = new Pager(totalAuctions, pageNo, pageSize);
 
-            return PartialView(model);
-        }
+        //    return PartialView(model);
+        //}
 
         [HttpGet]
         public ActionResult Create()
@@ -88,6 +88,7 @@ namespace Marketplace.Web.Controllers
             {
 
                 Auction auction = new Auction();
+
                 auction.Title = model.Title;
                 auction.CategoryID = model.CategoryID;
                 auction.Summary = model.Summary;
@@ -107,18 +108,8 @@ namespace Marketplace.Web.Controllers
 
 
                     auction.AuctionPictures = new List<AuctionPicture>();
-                    auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { AuctionID = auction.ID, PictureID = x }).ToList());
+                    auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { PictureID = x }).ToList());
                 }
-
-
-                //foreach (var picID in pictureIDs)
-                //{
-                //    var auctionPicture = new AuctionPicture();
-                //    auctionPicture.PictureID = picID;
-
-                //    auction.AuctionPictures.Add(auctionPicture);
-                //}
-
 
                 auctionsService.SaveAuction(auction);
 
@@ -143,6 +134,7 @@ namespace Marketplace.Web.Controllers
             model.ID = auction.ID;
             model.Title = auction.Title;
             model.CategoryID = auction.CategoryID;
+            model.Summary = auction.Summary;
             model.Description = auction.Description;
             model.ActualAmount = auction.ActualAmount;
             model.StartTime = auction.StartTime;
@@ -165,6 +157,7 @@ namespace Marketplace.Web.Controllers
             auction.ID = model.ID;
             auction.Title = model.Title;
             auction.CategoryID = model.CategoryID;
+            auction.Summary = model.Summary;
             auction.Description = model.Description;
             auction.ActualAmount = model.ActualAmount;
             auction.StartTime = model.StartTime;
@@ -204,20 +197,24 @@ namespace Marketplace.Web.Controllers
         public ActionResult Details(int ID)
         {
             AuctionDetailsViewModel model = new AuctionDetailsViewModel();
-            model.EntityID = (int)EntityEnums.Auction;
-
             model.Auction = auctionsService.GetAuctionByID(ID);
-            model.BidsAmount = model.Auction.ActualAmount + model.Auction.Bids.Sum(x => x.BidAmount);
 
+            if (model.Auction == null) return HttpNotFound();
+
+
+            model.BidsAmount = model.Auction.ActualAmount + model.Auction.Bids.Sum(x => x.BidAmount);
+            
             var latestBidder = model.Auction.Bids.OrderByDescending(x => x.TimeStamp).FirstOrDefault();
 
             model.LatestBider = latestBidder != null ? latestBidder.User : null;
 
-            model.Comments = sharedService.GetComments((int)EntityEnums.Auction, model.Auction.ID);
-
-
             model.PageTitle = "Auctions Details: " + model.Auction.Title;
-            model.PageDescription = model.Auction.Description.Substring(0, 10);
+            model.PageDescription = model.Auction.Summary;
+
+
+            model.EntityID = (int)EntityEnums.Auction;
+            model.RecordID = model.Auction.ID;
+            model.Comments = sharedService.GetComments(model.EntityID, model.RecordID);
 
             return View(model);
         }
@@ -228,7 +225,7 @@ namespace Marketplace.Web.Controllers
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
 
 
-            result.Data = auctionsService.GetAllAuctions().Select(x => new { ID = x.ID, BidAmount = x.ActualAmount });
+            result.Data = auctionsService.GetAllAuctions().Select(x => new { ID = x.ID, BidAmount = x.ActualAmount + x.BidAmount });
 
             return result;
         }

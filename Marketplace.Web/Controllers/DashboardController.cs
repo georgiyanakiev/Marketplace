@@ -16,6 +16,7 @@ namespace Marketplace.Web.Controllers
     public class DashboardController : Controller
     {
         DashboardService service = new DashboardService();
+        AuctionsServices auctionsService = new AuctionsServices();
 
         private MarketplaceUserManager _userManager;
         private MarketplaceRoleManager _roleManager;
@@ -248,74 +249,74 @@ namespace Marketplace.Web.Controllers
 
             return PartialView(model);
         }
-        //public async Task<ActionResult> RoleDetails(string roleID)
-        //{
-        //    if (!string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
-        //    {
-        //        var user = await UserManager.FindByIdAsync(userID);
+        public async Task<ActionResult> RoleDetails(string roleID)
+        {
+            if (!string.IsNullOrEmpty(roleID) && !string.IsNullOrEmpty(roleID))
+            {
+                var user = await UserManager.FindByIdAsync(roleID);
 
-        //        if (user != null)
-        //        {
-        //            var role = await RoleManager.FindByIdAsync(roleID);
+                if (user != null)
+                {
+                    var role = await RoleManager.FindByIdAsync(roleID);
 
-        //            if (role != null)
-        //            {
-        //                await UserManager.AddToRolesAsync(userID, role.Name);
-        //            }
+                    if (role != null)
+                    {
+                        await UserManager.AddToRolesAsync(roleID, role.Name);
+                    }
 
-        //        }
-        //    }
+                }
+            }
 
-        //    return RedirectToAction("UsersRoles", new { userID = userID });
-        //}
+            return RedirectToAction("UsersRoles", new { roleID = roleID });
+        }
 
-        //public async Task<ActionResult> RoleUsers(string roleID, int? pageNo)
-        //{
-        //    if (string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
-        //    {
-        //        var user = await UserManager.FindByIdAsync(userID);
+        public async Task<ActionResult> RoleUsers(string roleID, int? pageNo)
+        {
+            if (string.IsNullOrEmpty(roleID) && !string.IsNullOrEmpty(roleID))
+            {
+                var user = await UserManager.FindByIdAsync(roleID);
 
-        //        if (user != null)
-        //        {
-        //            var role = await RoleManager.FindByIdAsync(roleID);
+                if (user != null)
+                {
+                    var role = await RoleManager.FindByIdAsync(roleID);
 
-        //            if (role != null)
-        //            {
-        //                await UserManager.RemoveFromRoleAsync(userID, role.Name);
-        //            }
+                    if (role != null)
+                    {
+                        await UserManager.RemoveFromRoleAsync(roleID, role.Name);
+                    }
 
-        //        }
-        //    }
+                }
+            }
 
-        //    return RedirectToAction("UsersRoles", new { userID = userID });
-        //}
+            return RedirectToAction("UsersRoles", new { roleID = roleID });
+        }
         //[HttpPost]
         //public async Task<JsonResult> CreateRole(string roleName)
         //{
-        //    if (string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
+        //    if (string.IsNullOrEmpty(roleName) && !string.IsNullOrEmpty(roleName))
         //    {
-        //        var user = await UserManager.FindByIdAsync(userID);
+        //        var user = await UserManager.FindByIdAsync(roleName);
 
         //        if (user != null)
         //        {
-        //            var role = await RoleManager.FindByIdAsync(roleID);
+        //            var role = await RoleManager.FindByIdAsync(roleName);
 
         //            if (role != null)
         //            {
-        //                await UserManager.RemoveFromRoleAsync(userID, role.Name);
+        //                await UserManager.RemoveFromRoleAsync(roleName, role.Name);
         //            }
 
         //        }
         //    }
 
-        //    return RedirectToAction("UsersRoles", new { userID = userID });
+        //    return RedirectToAction("UsersRoles", new { roleName = roleName });
         //}
         //[HttpPost]
         //public async Task<JsonResult> UpdateRoleDetails(string roleID, string roleName)
         //{
-        //    if (string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
+        //    if (string.IsNullOrEmpty(roleID) && !string.IsNullOrEmpty(roleID))
         //    {
-        //        var user = await UserManager.FindByIdAsync(userID);
+        //        var user = await UserManager.FindByIdAsync(roleID);
 
         //        if (user != null)
         //        {
@@ -323,20 +324,20 @@ namespace Marketplace.Web.Controllers
 
         //            if (role != null)
         //            {
-        //                await UserManager.RemoveFromRoleAsync(userID, role.Name);
+        //                await UserManager.RemoveFromRoleAsync(roleID, role.Name);
         //            }
 
         //        }
         //    }
 
-        //    return RedirectToAction("UsersRoles", new { userID = userID });
+        //    return RedirectToAction("UsersRoles", new { roleID = roleID });
         //}
         //[HttpPost]
         //public async Task<JsonResult> DeleteRoleDetails(string roleID)
         //{
-        //    if (string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(roleID))
+        //    if (string.IsNullOrEmpty(roleID) && !string.IsNullOrEmpty(roleID))
         //    {
-        //        var user = await UserManager.FindByIdAsync(userID);
+        //        var user = await UserManager.FindByIdAsync(roleID);
 
         //        if (user != null)
         //        {
@@ -344,13 +345,13 @@ namespace Marketplace.Web.Controllers
 
         //            if (role != null)
         //            {
-        //                await UserManager.RemoveFromRoleAsync(userID, role.Name);
+        //                await UserManager.RemoveFromRoleAsync(roleID, role.Name);
         //            }
 
         //        }
         //    }
 
-        //    return RedirectToAction("UsersRoles", new { userID = userID });
+        //    return RedirectToAction("UsersRoles", new { roleID = roleID });
         //}
 
         public async Task<ActionResult> UsersComments(string userID)
@@ -365,10 +366,17 @@ namespace Marketplace.Web.Controllers
                 if (model.User != null)
                 {
 
-                    model.UserComments = service.GetCommentsByUser(userID);
+                    model.UserComments = service.GetCommentsByUser(userID, (int)EntityEnums.Auction);
+
+                    if (model.UserComments != null && model.UserComments.Count > 0)
+                    {
+                        var auctionIDs = model.UserComments.Select(x => x.RecordID).ToList();
+
+                        model.CommentedAuctions = auctionsService.GetAuctionsByIDs(auctionIDs);
+                    }
+
                 }
             }
-
 
             return PartialView("_UsersComments", model);
         }

@@ -14,8 +14,14 @@ namespace Marketplace.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+               name: "SearchAuction",
+               url: "search",
+               defaults: new { controller = "Home", action = "Search" }
+           );
+
+            routes.MapRoute(
                 name: "AuctionDetails",
-                url: "auction-details/{id}",
+                url: "{category}/auction/{ID}",
                 defaults: new { controller = "Auctions", action = "Details" }
             );
 

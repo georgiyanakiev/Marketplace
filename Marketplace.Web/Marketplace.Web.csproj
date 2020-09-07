@@ -405,6 +405,7 @@
     <Content Include="Views\Dashboard\RoleDetails .cshtml" />
     <Content Include="Views\Dashboard\_UsersComments.cshtml" />
     <Content Include="Views\Shared\_Comments.cshtml" />
+    <Content Include="Views\Auctions\_SearchAuctions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

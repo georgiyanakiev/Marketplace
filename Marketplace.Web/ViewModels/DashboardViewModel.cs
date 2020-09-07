@@ -91,6 +91,7 @@ namespace Marketplace.Web.ViewModels
     {
 
         public List<Comment> UserComments { get; set; }
+        public List<Auction> CommentedAuctions { get; set; }
         public MarketplaceUser User { get; set; }
     }
     public class CommentablePageViewModel : PageViewModel
